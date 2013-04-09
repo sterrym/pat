@@ -4,7 +4,7 @@ after "deploy:update", "deploy:cleanup"
 #after "deploy:update_code", "after_update_code" 
 
 set :user, 'deploy'
-set :repository, "git://github.com/andrewroth/project_application_tool.git"
+set :repository, "git://github.com/PowerToChange/pat.git"
 set :scm, "git"
 set :deploy_via, :remote_cache
 
