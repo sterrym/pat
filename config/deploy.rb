@@ -15,10 +15,10 @@ task :production do
   set :deploy_to, "/var/www/pat.powertochange.org"
 end
 
-task :dev do
+task :staging do
   role :app, 'elk.campusforchrist.org'
   role :db, 'elk.campusforchrist.org'
-  set :branch, 'dev'
+  set :branch, 'staging'
   set :deploy_to, '/var/www/elk.campusforchrist.org'
 end
 
