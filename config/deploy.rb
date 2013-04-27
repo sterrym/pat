@@ -48,3 +48,27 @@ namespace :deploy do
     finalize_update
   end
 end
+
+namespace :db do
+  task :pull do
+    rake = fetch(:rake, "rake")
+    rails_env = fetch(:rails_env, "production")
+    out = capture "cd #{current_path}; #{rake} RAILS_ENV=#{rails_env} db:dump #{"remotedb=#{ENV['remotedb']}" if ENV['remotedb']}"
+    puts "output: #{out}"
+    out =~ /Dumping (.*) to (.*)/
+    remote_db = $1
+    remote_file = $2
+
+    db_config = YAML::load(File.open("config/database.yml"))
+    user = db_config[rails_env]['username']
+    password = db_config[rails_env]['password']
+    host = db_config[rails_env]['host'] || 'localhost'
+    local_db = ENV['db'] ? ENV['db'] : db_config[rails_env]['database']
+    get remote_file, File.basename(remote_file)
+
+    puts "This will recreate your #{local_db} database.  Are you sure? (y/n)"
+    if STDIN.gets.chomp.downcase == 'y'
+      run_locally "cat #{File.basename(remote_file)} | mysql --user #{user} #{"-p#{password}" if password} --host #{host} #{local_db}"
+    end
+  end
+end
