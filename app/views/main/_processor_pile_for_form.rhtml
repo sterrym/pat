@@ -37,7 +37,7 @@
       </thead>
       <tbody>
         <% for @profile in @processor_list %>
-          <% next if @profile.appln.form != form %>
+          <% next if @profile.try(:appln).try(:form) != form %>
           <% project = @profile.project %>
           <% @viewer.set_project(project) %>
           <% @appln = @profile.appln %>

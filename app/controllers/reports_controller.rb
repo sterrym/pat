@@ -1126,6 +1126,10 @@ class ReportsController < ApplicationController
       :project, 'string'
     ]
 
+    if params[:prep_item_id]
+      @prep_items = [ PrepItem.find(params[:prep_item_id]) ]
+    end
+
     i = 1
     for prep_item in @prep_items
       if prep_item.paperwork

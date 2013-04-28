@@ -63,8 +63,8 @@ end
        @processor_list = Applying.find_all_by_project_id your_project.id
     %>
     <% @refs_for_questionnaire = Hash[*(@processor_list.collect{ |applying|
-           applying.appln.form.questionnaire.id
-         }.uniq.inject([]) { |arr,qid|
+           applying.try(:appln).try(:form).try(:questionnaire).try(:id)
+         }.compact.uniq.inject([]) { |arr,qid|
            arr << qid << Questionnaire.find(qid).references
          })]
     %>
