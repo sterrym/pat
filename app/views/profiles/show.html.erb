@@ -20,19 +20,19 @@
           <ul id="travelList">
             <li>
               <span class="itinerary_available">
-                <%= link_to "Itinerary", { :controller => "profile_travel_segments", :action => :assigned, :profile_id => @profile.id, :restricted => true, :print => "pdf", :filename => "itinerary" }, :target => "_blank" %>
+                <%= link_to "Itinerary and eTicket info", { :controller => "profile_travel_segments", :action => :assigned, :profile_id => @profile.id, :restricted => true, :print => "pdf", :filename => "itinerary" }, :target => "_blank" %>
               </span>
             </li>
           </ul>
         <% else %>
           <ul id="travelList">
             <li>
-              <span class="itinerary_unavailable">Itinerary</span>
+              <span class="itinerary_unavailable">Itinerary And eTicket Info</span>
             </li>
           </ul>
-          <p class="smallDescriptionText">Itinerary will become blue when available.
+          <p class="smallDescriptionText">Itinerary and eTicket info will become blue when available.
             <% if @profile.project.itinerary_available %>
-              You will not receive itinerary info before <%= @profile.project.itinerary_available %>
+              You will not receive itinerary and eTicket info before <%= @profile.project.itinerary_available %>
             <% end %>
           </p>
         <% end %>
