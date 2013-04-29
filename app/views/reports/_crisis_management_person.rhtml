@@ -16,10 +16,7 @@ def h2(s)
 end
 
 def comma_join(a,b)
-  a2 = a.to_s
-  b2 = b.to_s
-  comma = !a2.empty? && !b2.empty?
-  "#{a}#{', ' if comma}#{b}"
+  [a.to_s, b.to_s].find_all{ |el| el.present? }.compact.join(', ')
 end
 
 pp = person[i(:passport)]
@@ -53,7 +50,7 @@ is_staff = person[c(:staff)].downcase == 'staff'
       <td colspan='3'><%= h2 'Meds:' %> <%= ei[:meds] %></td>
     </tr>
     <tr class='inconcpicuous'>
-      <td><%= h2 'Health Ins:' %> <%= comma_join(hinfo[:number], hinfo[:province]) %></td>
+      <td><%= h2 'Health Ins:' %> <%= comma_join(comma_join(hinfo[:number], hins[:number]), hinfo[:province]) %></td>
       <td colspan='3'><%= h2 'Extra Ins:' %> <%= comma_join(hins[:carrier], hinfo[:number]) %></td>
     </tr>
     <tr class='inconcpicuous'>

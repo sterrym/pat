@@ -502,8 +502,6 @@ class ReportsController < ApplicationController
       
       gender = p.gender
 
-      ec_entry = nil # used in get_passport_info
-      #ec_entry = p.emerg
       ec_entry = p.get_emerg
 
       empty_wc = EmergencyContact.new('','','','','','')
@@ -1109,7 +1107,6 @@ class ReportsController < ApplicationController
     render_report @rows
   end
 
-  
   def prep_items
     # at this point we are guaranteed to have @projects and @prep_items set as
     # arrays of projects and prep_items, respectively
