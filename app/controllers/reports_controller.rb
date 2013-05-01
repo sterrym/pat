@@ -1123,10 +1123,17 @@ class ReportsController < ApplicationController
       :project, 'string'
     ]
 
-    if params[:prep_item_id]
+    debugger
+    if params[:prep_item_id] && params[:prep_item_id] != 'all'
       @prep_items = [ PrepItem.find(params[:prep_item_id]) ]
     end
 
+    # ensure profile_prep_items is current
+    prep_item_applicable_profiles = Hash[@prep_items.collect{ |prep_item| [ prep_item, prep_item.applicable_profiles(@project) ] }]
+    @prep_items.delete_if{ |prep_item| prep_item_applicable_profiles[prep_item].empty? }
+    @profiles = Profile.find(prep_item_applicable_profiles.values.flatten.collect(&:id), :include => :received_prep_items)
+    @participants = []
+    
     i = 1
     for prep_item in @prep_items
       if prep_item.paperwork
@@ -1141,12 +1148,6 @@ class ReportsController < ApplicationController
    
     @columns = MyOrderedHash.new columns_arr
 
-    # ensure profile_prep_items is current
-    prep_item_applicable_profiles = Hash[@prep_items.collect{ |prep_item| [ prep_item, prep_item.applicable_profiles(@project) ] }]
-    @prep_items.delete_if{ |prep_item| prep_item_applicable_profiles[prep_item].empty? }
-    @profiles = Profile.find(prep_item_applicable_profiles.values.flatten.collect(&:id), :include => :received_prep_items)
-    @participants = []
-    
     for profile in @profiles
       row = []
       if profile.class == StaffProfile
