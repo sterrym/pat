@@ -3,6 +3,7 @@ Deploy to dev:        cap dev deploy
 
 == Uses RVMRC
 
+    rvm install ree-1.8.7-2012.02
     rvm --rvmrc --create ree-1.8.7@pat --create
 
     gem install rails --version 2.3.18
