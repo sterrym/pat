@@ -1,7 +1,8 @@
 set :application, 'pat'
+set :use_sudo, false
 set :keep_releases, '2'
 after "deploy:update", "deploy:cleanup" 
-after "deploy:update_code", "after_update_code" 
+#after "deploy:update_code", "after_update_code" 
 
 set :user, 'deploy'
 set :repository, "git://github.com/PowerToChange/pat.git"
