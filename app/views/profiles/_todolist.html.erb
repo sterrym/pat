@@ -1,8 +1,15 @@
 <p class="smallDescriptionText">Do not check items until they are completed. Hover over the "?" for more information.</p>
   <ul id="toDoList">
     <% @profile.all_prep_items.group_by(&:category).sort.each do |category, prep_items| %>
-      <% prep_items.group_by(&:deadline).sort.each do |deadline, prep_items| %>
-        <%= [ deadline, category.try(:title) ].compact.join(" - ") %>
+      <% prep_items.group_by(&:deadline).sort{ |a,b| a.first ? a.first.to_time.to_i : 0 <=> b.first ? b.first.to_time.to_i : 0 }.each do |deadline, prep_items| %>
+        <!-- only print header if there are prep items for it -->
+        <% prep_items.sort.each do |prep_item| %>
+          <% ppi = @profile.profile_prep_items.find_by_prep_item_id(prep_item.id) %>
+          <% next if ppi.try(:completed_at) %>
+          <%= [ deadline, category.try(:title) ].compact.join(" - ") %>
+          <% next %>
+        <% end %>
+        <!-- prep items -->
         <% prep_items.sort.each do |prep_item| %>
           <% ppi = @profile.profile_prep_items.find_by_prep_item_id(prep_item.id) %>
           <% next if ppi.try(:completed_at) %>
