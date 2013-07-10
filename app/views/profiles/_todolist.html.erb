@@ -7,7 +7,7 @@
           <% ppi = @profile.profile_prep_items.find_by_prep_item_id(prep_item.id) %>
           <% next if ppi.try(:completed_at) %>
           <%= [ deadline, category.try(:title) ].compact.join(" - ") %>
-          <% next %>
+          <% break %>
         <% end %>
         <!-- prep items -->
         <% prep_items.sort.each do |prep_item| %>
