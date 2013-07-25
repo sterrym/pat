@@ -33,7 +33,7 @@ ActiveRecord::Base.class_eval do
         # Set the table name for the class, if defined
         if @@map_hash['tables'] && @@map_hash['tables'][self.name.underscore]
           set_table_name @@map_hash['tables'][self.name.underscore]
-        elsif db = @@map_hash['databases'].find{ |db, tables| tables.index(self.name.underscore) }.try(:first)
+        elsif @@map_hash['databases'] && db = @@map_hash['databases'].find{ |db, tables| tables.index(self.name.underscore) }.try(:first)
           db_name = ActiveRecord::Base.configurations[db]["database"]
           set_table_name "#{db_name}.#{table_name.split('.').last}"
         end
