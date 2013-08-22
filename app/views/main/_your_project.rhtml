@@ -41,35 +41,29 @@ end
 <% end %>
 
 <% if !@viewer.is_student?(@eg) %>
-  <% 
-    cache(:controller => 'main', :action => 'your_projects', :section => 'Acceptance',
-          :project_id => your_project.id, :role => @viewer.roles_wrt_project(your_project)) do
+  <p>
+    <%= link_to 'Assign tasks', :action => 'assign_individual_tasks', :project_id => your_project.id %>
+  </p>
+
+  <p>Accepted pile:
+    <blockquote>
+      <%= render :partial => "accepted_pile", :locals => { :project => your_project } %>
+    </blockquote>
+    
+  </p>
+
+  <!-- all staff can see the processor list, but only certain people can actually evaluate -->
+  <% @can_evaluate = @viewer.is_eventgroup_coordinator?(@eg) || @viewer.is_processor? %>
+  <% appln_includes = [ :references, { :viewer => { :persons => :campuses } }, :preference1, :profiles ]
+     @processor_list = Applying.find_all_by_project_id your_project.id
+  %>
+  <% @refs_for_questionnaire = Hash[*(@processor_list.collect{ |applying|
+         applying.try(:appln).try(:form).try(:questionnaire).try(:id)
+       }.uniq.compact.inject([]) { |arr,qid|
+         arr << qid << Questionnaire.find(qid).references
+       })]
   %>
 
-    <p>
-      <%= link_to 'Assign tasks', :action => 'assign_individual_tasks', :project_id => your_project.id %>
-    </p>
-
-    <p>Accepted pile:
-	    <blockquote>
-	      <%= render :partial => "accepted_pile", :locals => { :project => your_project } %>
-      </blockquote>
-      
-    </p>
-  <% end %>
-    <!-- all staff can see the processor list, but only certain people can actually evaluate -->
-    <% @can_evaluate = @viewer.is_eventgroup_coordinator?(@eg) || @viewer.is_processor? %>
-    <% appln_includes = [ :references, { :viewer => { :persons => :campuses } }, :preference1, :profiles ]
-       @processor_list = Applying.find_all_by_project_id your_project.id
-    %>
-    <% @refs_for_questionnaire = Hash[*(@processor_list.collect{ |applying|
-           applying.try(:appln).try(:form).try(:questionnaire).try(:id)
-         }.uniq.compact.inject([]) { |arr,qid|
-           arr << qid << Questionnaire.find(qid).references
-         })]
-    %>
-
-    
   <p>Processor's pile:
   <blockquote>
     <%= render :partial => "processor_pile", :locals => { :project => your_project } %>
