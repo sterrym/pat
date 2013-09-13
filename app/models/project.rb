@@ -34,8 +34,8 @@ class Project < ActiveRecord::Base
     # 58    # 2010 projects
     # 75    # 2011 projects
     # 82    # 2012 projects
-    94    # 2013 projects
-    # 102   # 2014 projects
+    # 94    # 2013 projects
+    102   # 2014 projects
   end
 
   def self.campus_current_project_ids
@@ -46,8 +46,7 @@ class Project < ActiveRecord::Base
     #]
   end
 
-  def self.campus_project_acceptance_totals(campus_ids, secondary_sort = {}, project_ids = campus_current_project_ids
-)
+  def self.campus_project_acceptance_totals(campus_ids, project_ids = campus_current_project_ids,  secondary_sort = {})
     secondary_sort ||= {} # when called from web request, these values might be nil
     project_ids ||= campus_current_project_ids
     campus_project_totals(campus_ids, "Acceptance", "accepted_count", project_ids, secondary_sort)
@@ -58,7 +57,7 @@ class Project < ActiveRecord::Base
   end
 
   # used by pulse to returns project totals
-  def self.campus_project_totals(campus_ids, type = "Acceptance", count_name = "accepted_count", project_ids = current_project_ids, secondary_sort = {})
+  def self.campus_project_totals(campus_ids, type = "Acceptance", count_name = "accepted_count", project_ids = campus_current_project_ids, secondary_sort = {})
 
     # when called from the web these params might be pasesd in as nil
     type ||= "Acceptance"
@@ -111,8 +110,8 @@ class Project < ActiveRecord::Base
         diff
       else
         if secondary_sort
-          s1 = (secondary_sort[k1] && secondary_sort[k1][:total]) || 0
-          s2 = (secondary_sort[k2] && secondary_sort[k2][:total]) || 0
+          s1 = (secondary_sort[k1] && secondary_sort[k1][:total]).to_i || 0
+          s2 = (secondary_sort[k2] && secondary_sort[k2][:total]).to_i || 0
           s2 <=> s1
         else
           0

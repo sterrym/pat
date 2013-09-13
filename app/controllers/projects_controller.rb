@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
     @projects = @event_group.projects
 
     respond_to do |format|
-      format.json { render :json => {
+      format.inline { render :inline => {
         :success => true,
         :message => "Loaded data",
         :data => @projects
@@ -66,22 +66,22 @@ class ProjectsController < ApplicationController
 
   def campus_project_acceptance_totals
     unless params[:campus_ids]
-      render :json => { :error => "campus_ids are required" }
+      render :inline => "campus_ids are required"
     else
-      render :json => Project.campus_project_totals(params[:campus_ids], "Acceptance", "accepted_count", params[:project_ids], params[:secondary_sort])
+      render :inline => YAML::dump(Project.campus_project_acceptance_totals(params[:campus_ids], params[:project_ids], params[:secondary_sort]))
     end
   end
 
   def campus_project_applying_totals
     unless params[:campus_ids]
-      render :json => { :error => "campus_ids are required" }
+      render :inline => "campus_ids are required"
     else
-      render :json => Project.campus_project_totals(params[:campus_ids], "Applying", "applying_count", params[:project_ids])
+      render :inline => YAML::dump(Project.campus_project_applying_totals(params[:campus_ids], params[:project_ids]))
     end
   end
 
   def projects_count_hash
-    render :json => Project.projects_count_hash(params[:project_ids])
+    render :inline => YAML::dump(Project.projects_count_hash(params[:project_ids]))
   end
 
   protected
