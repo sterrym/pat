@@ -5,8 +5,14 @@ class ProjectsController < ApplicationController
   include Permissions
   include BulkPrinting
 
-  before_filter :get_project, :except => [ :index ]
-  before_filter :ensure_project_staff
+  campus_stats_actions = [ :campus_project_acceptance_totals, :campus_project_applying_totals, :projects_count_hash ]
+
+  before_filter :get_project, :except => [ :index ] + campus_stats_actions
+  before_filter :ensure_project_staff, :except => campus_stats_actions
+  skip_before_filter :verify_user, :only => campus_stats_actions
+  skip_before_filter :get_project, :only => campus_stats_actions
+  skip_before_filter :verify_event_group_chosen, :only => campus_stats_actions
+  skip_before_filter :set_event_group, :only => campus_stats_actions
 
   def index
     @event_group = params[:event_group_id] ? EventGroup.find(params[:event_group_id]) : @eg
@@ -56,6 +62,26 @@ class ProjectsController < ApplicationController
         :appln => acc.appln
       }
     end
+  end
+
+  def campus_project_acceptance_totals
+    unless params[:campus_ids]
+      render :json => { :error => "campus_ids are required" }
+    else
+      render :json => Project.campus_project_totals(params[:campus_ids], "Acceptance", "accepted_count", params[:project_ids], params[:secondary_sort])
+    end
+  end
+
+  def campus_project_applying_totals
+    unless params[:campus_ids]
+      render :json => { :error => "campus_ids are required" }
+    else
+      render :json => Project.campus_project_totals(params[:campus_ids], "Applying", "applying_count", params[:project_ids])
+    end
+  end
+
+  def projects_count_hash
+    render :json => Project.projects_count_hash(params[:project_ids])
   end
 
   protected

@@ -52,7 +52,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :references_viewer, :member => QUESTIONNAIRE_ACTIONS
   map.resources :processor_viewer, :member => QUESTIONNAIRE_ACTIONS
 
-  map.resources :projects, :member => { :bulk_summary_forms => :get, :bulk_processor_forms => :get }
+  map.resources :projects, :member => { 
+    :bulk_summary_forms => :get, 
+    :bulk_processor_forms => :get
+  }, :collection => {
+    :campus_project_acceptance_totals => :get,
+    :campus_project_applying_totals => :get,
+    :projects_count_hash => :get
+  }
 
   # The priority is based upon order of creation: first created -> highest priority.
   
