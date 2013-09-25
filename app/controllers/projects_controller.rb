@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
     @projects = @event_group.projects
 
     respond_to do |format|
-      format.inline { render :inline => {
+      format.json { render :inline => {
         :success => true,
         :message => "Loaded data",
         :data => @projects
