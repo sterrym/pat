@@ -17,6 +17,10 @@ class Project < ActiveRecord::Base
   
   belongs_to :event_group
 
+  def <=>(other)
+    self.title <=> other.title
+  end
+
   def name() title end
   
   def year

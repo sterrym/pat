@@ -24,7 +24,7 @@
   <div id="select_project">
     <form>
       <b>Select project to view: </b>
-      <%= select_tag 'project_id', options_for_select(@allowable_projects_array, @project.id) %>
+      <%= select_tag 'project_id', options_for_select(@allowable_projects_array.sort, @project.id) %>
       <%= observe_field 'project_id', :url => {:action => 'your_projects' }, :with => "'project_id=' + value",
       :loading => "Element.show('loading')", :complete => "Element.hide('loading')" %>
     </form>
