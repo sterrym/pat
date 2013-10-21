@@ -96,11 +96,8 @@ class ProfilesController < ApplicationController
 
   def index
     @page_title = "Dashboard"
-    profiles = @viewer.profiles.find :all, :include => [ { :appln => { :form => :questionnaire } }, :project ],
-       :select => "#{Profile.table_name}.id, #{Form.table_name}.event_group_id," +
-                  "#{Profile.table_name}.status, #{Profile.table_name}.type," +
-                  "#{Questionnaire.table_name}.title, #{Project.table_name}.title",
-       :conditions => [ "#{Form.table_name}.event_group_id = ?", @eg.id ]
+    profiles = @viewer.profiles.find_all{ |p| @eg.projects.collect(&:id).include?(p.project_id) || 
+      p.try(:appln).try(:form).try(:event_group) == @eg }
 
     @started = find_profiles profiles, :class => Applying, :status => :started
     @unsubmitted = find_profiles profiles, :class => Applying, :status => :unsubmitted
