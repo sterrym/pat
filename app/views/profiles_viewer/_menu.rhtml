@@ -4,8 +4,10 @@
 
    <% if @can_view_references %>
      <% for ref in @references -%>
+       <% if ref[:instance_id] %>
          <%= sub_menu_item ref[:text], :url => references_viewer_url(ref[:instance_id]) %>
-       <% end -%>
+       <% end %>
+     <% end -%>
    <% end -%>
 
    <%= sub_menu_item('Processor Form', :url => processor_viewer_url(@profile.id)) if @can_view_entire %>
