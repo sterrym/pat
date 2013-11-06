@@ -854,7 +854,7 @@ class ReportsController < ApplicationController
   # returns a select list with viewers who are accepted to the projects given
   def viewers_with_profile_for_project
     profiles = Profile.find_all_by_project_id @projects_ids, :include => { :viewer => :persons }
-    @profile_type_and_viewers = profiles.collect{ |p| [ p.class.name, p.viewer ] }
+    @profile_type_and_viewers = profiles.reject{ |p| p.viewer.nil? }.collect{ |p| [ p.class.name, p.viewer ] }
     
     # sort first by type of profile, then by name
     @profile_type_and_viewers.sort!{ |a,b| 
