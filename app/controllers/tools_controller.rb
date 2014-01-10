@@ -58,8 +58,8 @@ class ToolsController < ApplicationController
     unless request.post?
       params[:event_group_id] ||= @eg.id
       params[:include_accepted] ||= '1'
-      params[:include_withdrawn] ||= '1'
-      params[:include_staff] ||= '1'
+      params[:include_withdrawn] ||= '0'
+      params[:include_staff] ||= '0'
       params[:include_with_codes] ||= '0'
       params[:include_without_codes] ||= '1'
     end
