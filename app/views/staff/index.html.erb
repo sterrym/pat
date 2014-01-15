@@ -1,0 +1,36 @@
+<h1>Listing staffs</h1>
+
+<%= sortable_table %>
+  <thead>
+    <tr>
+      <%= th :name => 'Staff Id', :type => 'integer' %>
+      <%= th :name => 'Person Id', :type => 'integer' %>
+      <%= th :name => 'User Id', :type => 'integer' %>
+      <%= th :name => 'Person', :type => 'string' %>
+      <%= th :name => 'Login', :type => 'string' %>
+      <%= th :name => 'Last Login', :type => 'datetime' %>
+      <%= th :name => 'Email', :type => 'string' %>
+      <%= th :name => 'Gcx', :type => 'boolean' %>
+      <%= th :name => 'Active', :type => 'boolean' %>
+    </tr>
+  </thead>
+
+<% @staffs.each do |staff| %>
+  <tr>
+    <td><%=h staff.id %></td>
+    <td><%=h staff.person.id %></td>
+    <td><%=h staff.person.try(:user).try(:id) %></td>
+    <td><%=h staff.person %></td>
+    <td><%=h staff.login %></td>
+    <td><%=h staff.last_login %></td>
+    <td><%=h staff.email %></td>
+    <td><%=h staff.gcx ? "Yes" : "No" %></td>
+    <td><%=h staff.is_active == 1 ? "Yes" : "No" %></td>
+    <td><%= link_to 'Destroy', staff, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New staff', new_staff_path %>

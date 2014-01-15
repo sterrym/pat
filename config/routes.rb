@@ -1,4 +1,14 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :staff
+
+  map.resources :campuses
+
+  map.resources :campuses
+
+  map.resources :campuses
+
+  map.resources :campuses
+
   map.resources :profile_notes
 
   map.resources :eventgroup_coordinators, :member => { :list => :get, :new => :get, :create => :post }

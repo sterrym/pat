@@ -15,3 +15,12 @@
     <!-- </li> -->
   </ul>
 </div>
+<% if @viewer.is_projects_coordinator? %>
+  <div>
+    <p><i>Projects Coordinator Only:</i></p>
+    <ul>
+      <li><%= link_to 'Manage Campuses', :controller => 'campuses' %></li>
+      <li><%= link_to 'Manage Staff', :controller => 'staff' %></li>
+    </ul>
+  </div>
+<% end %>

@@ -29,6 +29,7 @@ tables:
   gender: cim_hrdb_gender
   region: cim_hrdb_region
   state: cim_hrdb_province
+  staff: cim_hrdb_staff
   cim_hrdb_admin: cim_hrdb_admin
   cim_hrdb_priv: cim_hrdb_priv
   cim_hrdb_staff: cim_hrdb_staff
@@ -154,6 +155,8 @@ cim_hrdb_admin:
 cim_hrdb_priv:
   id: priv_id
   accesslevel: priv_accesslevel
+staff:
+  id: staff_id
 cim_hrdb_staff:
   id: staff_id
 cim_hrdb_person_year:

@@ -1,0 +1,20 @@
+<h1>Editing campus</h1>
+
+<% form_for(@campus) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :abbrv %><br />
+    <%= f.text_field :abbrv %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @campus %> |
+<%= link_to 'Back', campuses_path %>
