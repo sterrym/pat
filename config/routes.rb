@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :staff
+  map.resources :staff, :collection => { :search => :get }
 
   map.resources :campuses
 

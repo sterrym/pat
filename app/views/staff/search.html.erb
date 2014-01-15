@@ -1,0 +1,10 @@
+<% if @found_viewers.present? %>
+  <% @found_viewers.each do |viewer| %>
+    <% userid = viewer.name + " (" + viewer.username + ") Last login #{viewer.viewer_lastLogin}" %>
+    <div class="search_result_row">
+      <%= link_to userid, "/staff.js?person_id=#{viewer.person.id}" %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="search_none_found">Sorry, nobody found by that name.</div>
+<% end %>

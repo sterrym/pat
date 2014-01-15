@@ -398,8 +398,9 @@ render :partial => "viewer_specifics"
   end
   
   def set_campuses
-    @campuses = @viewer ? users_campuses : []
-    @campuses.reject!{ |c| !relevant_campus_ids.include?(c.id) }
+    #@campuses = @viewer ? users_campuses : []
+    #@campuses.reject!{ |c| !relevant_campus_ids.include?(c.id) }
+    @campuses = @viewer.try(:person).try(:is_hrdb_staff?) ? Campus.all : []
   end
   
   def users_campuses

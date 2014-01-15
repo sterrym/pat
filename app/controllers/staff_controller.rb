@@ -1,5 +1,6 @@
 class StaffController < ApplicationController
   include Permissions
+
   before_filter :ensure_projects_coordinator
   before_filter :set_page_title
 
@@ -44,15 +45,17 @@ class StaffController < ApplicationController
   # POST /staffs
   # POST /staffs.xml
   def create
-    @staff = Staff.new(params[:staff])
+    @staff = Staff.find_or_create_by_person_id(params[:person_id])
 
     respond_to do |format|
       if @staff.save
         format.html { redirect_to(@staff, :notice => 'Staff was successfully created.') }
         format.xml  { render :xml => @staff, :status => :created, :location => @staff }
+        format.js   { render(:inline => "") }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @staff.errors, :status => :unprocessable_entity }
+        format.js   { render(:inline => "alert('error')") }
       end
     end
   end
@@ -66,7 +69,14 @@ class StaffController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(staffs_url) }
       format.xml  { head :ok }
+      format.js   { render :inline => "" }
     end
+  end
+
+  def search
+    @found_viewers = Person.search_by_name(params[:text]).collect(&:viewer).compact
+    @found_viewers.reject!{ |u| u.person.try(:is_hrdb_staff?) }
+    @found_viewers.sort! { |p1, p2| p1.try(:person).try(:full_name) <=> p2.try(:person).try(:full_name) }
   end
 
   protected

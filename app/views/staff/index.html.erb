@@ -16,7 +16,7 @@
   </thead>
 
 <% @staffs.each do |staff| %>
-  <tr>
+  <tr class="staff_<%= staff.id %>">
     <td><%=h staff.id %></td>
     <td><%=h staff.person.id %></td>
     <td><%=h staff.person.try(:user).try(:id) %></td>
@@ -26,11 +26,62 @@
     <td><%=h staff.email %></td>
     <td><%=h staff.gcx ? "Yes" : "No" %></td>
     <td><%=h staff.is_active == 1 ? "Yes" : "No" %></td>
-    <td><%= link_to 'Destroy', staff, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Remove', "javascript:removeStaff(#{staff.id});" %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New staff', new_staff_path %>
+<%= link_to 'New staff', "#newstaff", :id => "show_new_staff" %>
+
+<div id="new_staff_search" style="display:none">
+  <br/>
+  Search for person to add as staff: <%= text_field_tag "search_text" %>
+  <%= image_tag "spinner.gif", :style => "display:none", :id => "search_spinner" %>
+  <a class="button" href="javascript:location.reload()">Done</a>
+</div>
+
+<div id="search_results">
+</div>
+
+<script>
+  var searches = 0;
+  jQuery("#show_new_staff").click(function() { jQuery("#new_staff_search").slideDown(); });
+  jQuery('#search_text').keyup(function() {
+    jQuery("#search_spinner").show();
+    searches++;
+    jQuery.get("/staff/search", { text: jQuery("#search_text").val() }, function(data) {
+      searches--;
+      if (searches == 0) {
+        jQuery("#search_spinner").hide();
+      }
+      jQuery("#search_results").html(data);
+      jQuery(".search_result_row a").click(function(evt) {
+        $results_row = jQuery(this).parent();
+        $results_row.html("Adding...");
+        jQuery.post(jQuery(this).attr("href"), function() { $results_row.html("Added"); });
+        evt.preventDefault();
+        return false;
+      });
+    });
+  });
+
+  function removeStaff(staff_id) {
+    jQuery.post("/staff/" + staff_id + ".js", { "_method": "DELETE" }, function() {
+      jQuery("tr.staff_"+staff_id).fadeOut();
+    });
+    console.log(staff_id);
+  }
+
+  jQuery("a.delete_link").click(function(evt) {
+    /*
+    jQuery.post("/staff.js", { "_method": "DELETE" }, function() {
+      jQuery(this).parent("tr").fadeOut();
+    });
+    */
+    console.log("HERE");
+    evt.preventDefault();
+    return false;
+  });
+</script>
