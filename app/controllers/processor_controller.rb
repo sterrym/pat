@@ -45,12 +45,12 @@ class ProcessorController < ApplicationController
   end
   
   def accept
-    @appln.profile.manual_update :type => 'Acceptance', :appln_id => @appln.id, :project_id => @project.id, 
+    @profile.manual_update :type => 'Acceptance', :appln_id => @appln.id, :project_id => @project.id, 
       :support_claimed => 0, :support_coach_id => params[:support_coach_id], 
       :accepted_by_viewer_id => @viewer.id, :as_intern => params[:as_intern],
       :viewer_id => @appln.viewer_id, :viewer => @viewer, :locked_by => nil
     
-    profile = Profile.find(@appln.profile.id) # reload to make the new type catch
+    profile = Profile.find(@profile.id) # reload to make the new type catch
     profile.accept!
 
     email = SpApplicationMailer.deliver_accepted(profile, @viewer.email)
