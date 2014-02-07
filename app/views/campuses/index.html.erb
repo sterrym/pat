@@ -1,10 +1,12 @@
 <h1>Listing campuses</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Abbrv</th>
-  </tr>
+<%= sortable_table %>
+  <thead>
+    <tr>
+      <%= th :name => 'Name', :type => 'string' %>
+      <%= th :name => 'Abbrv', :type => 'string' %>
+    </tr>
+  </thead>
 
 <% @campuses.each do |campus| %>
   <tr>
