@@ -26,6 +26,13 @@ class MyOrderedHash < Hash
       params[0].each_with_index do |k,i|
         if i % 2 == 0
           v = params[0][i+1]
+          if self[k]
+            i = 2
+            k_orig = k
+            while self[k]
+              k = "#{k_orig} #{i}"
+            end
+          end
           self[k] = v
         end
       end
