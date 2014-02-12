@@ -1123,7 +1123,6 @@ class ReportsController < ApplicationController
       :project, 'string'
     ]
 
-    debugger
     if params[:prep_item_id] && params[:prep_item_id] != 'all'
       @prep_items = [ PrepItem.find(params[:prep_item_id]) ]
     end
@@ -1131,7 +1130,10 @@ class ReportsController < ApplicationController
     # ensure profile_prep_items is current
     prep_item_applicable_profiles = Hash[@prep_items.collect{ |prep_item| [ prep_item, prep_item.applicable_profiles(@project) ] }]
     @prep_items.delete_if{ |prep_item| prep_item_applicable_profiles[prep_item].empty? }
-    @profiles = Profile.find(prep_item_applicable_profiles.values.flatten.collect(&:id), :include => :received_prep_items)
+    @profiles = Profile.find(:all, 
+      :include => :received_prep_items, 
+      :conditions => { :project_id => @projects.collect(&:id), :id => prep_item_applicable_profiles.values.flatten.collect(&:id)
+    })
     @participants = []
     
     i = 1
@@ -1189,6 +1191,8 @@ class ReportsController < ApplicationController
 
       @participants << row
     end
+
+    debugger
 
     render_report @participants
   end
