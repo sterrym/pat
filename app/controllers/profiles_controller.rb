@@ -114,7 +114,7 @@ class ProfilesController < ApplicationController
       all_form_ids = @eg.forms.find_all_by_hidden(false).collect &:id
 
       # now figure out which haven't been started (easy)
-      not_started_ids = all_form_ids - profiles.collect{ |p| p.appln.form.id if p.appln.form }.compact
+      not_started_ids = all_form_ids - profiles.collect{ |p| p.appln.form.id if p.appln.try(:form) }.compact
 
       @not_started = Form.find(not_started_ids)
     end
