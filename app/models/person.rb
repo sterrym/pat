@@ -6,6 +6,9 @@ class Person < ActiveRecord::Base
 
   has_many :people
   has_many :attributes_updated_ats
+  has_many :staff_assignments
+  has_many :staff_campuses, :through => :staff_assignments, :class_name => "Campus", :source => :campus
+  has_many :staffs
 
   def viewers
     users
@@ -31,5 +34,9 @@ class Person < ActiveRecord::Base
 
   def person
     self
+  end
+
+  def staff
+    staffs.first
   end
 end

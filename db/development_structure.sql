@@ -1,3 +1,75 @@
+CREATE TABLE `accountadmin_accesscategory` (
+  `accesscategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `accesscategory_key` varchar(50) NOT NULL DEFAULT '',
+  `english_value` text,
+  PRIMARY KEY (`accesscategory_id`),
+  KEY `ciministry.accountadmin_accesscategory_accesscateg` (`accesscategory_key`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `accountadmin_accessgroup` (
+  `accessgroup_id` int(11) NOT NULL AUTO_INCREMENT,
+  `accesscategory_id` int(11) NOT NULL DEFAULT '0',
+  `accessgroup_key` varchar(50) NOT NULL DEFAULT '',
+  `english_value` text,
+  PRIMARY KEY (`accessgroup_id`),
+  KEY `ciministry.accountadmin_accessgroup_accessgroup_ke` (`accessgroup_key`)
+) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `accountadmin_accountadminaccess` (
+  `accountadminaccess_id` int(11) NOT NULL AUTO_INCREMENT,
+  `viewer_id` int(11) NOT NULL DEFAULT '0',
+  `accountadminaccess_privilege` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`accountadminaccess_id`),
+  KEY `ciministry.accountadmin_accountadminaccess_viewer_` (`viewer_id`),
+  KEY `ciministry.accountadmin_accountadminaccess_account` (`accountadminaccess_privilege`)
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `accountadmin_accountgroup` (
+  `accountgroup_id` int(11) NOT NULL AUTO_INCREMENT,
+  `accountgroup_key` varchar(50) NOT NULL DEFAULT '',
+  `accountgroup_label_long` varchar(50) NOT NULL DEFAULT '',
+  `english_value` text,
+  PRIMARY KEY (`accountgroup_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `accountadmin_language` (
+  `language_id` int(11) NOT NULL AUTO_INCREMENT,
+  `language_key` varchar(25) NOT NULL DEFAULT '',
+  `language_code` char(2) NOT NULL DEFAULT '',
+  `english_value` text,
+  PRIMARY KEY (`language_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `accountadmin_viewer` (
+  `viewer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `guid` varchar(64) DEFAULT '',
+  `accountgroup_id` int(11) NOT NULL DEFAULT '0',
+  `viewer_userID` varchar(50) NOT NULL DEFAULT '',
+  `viewer_passWord` varchar(50) DEFAULT '',
+  `language_id` int(11) NOT NULL DEFAULT '0',
+  `viewer_isActive` int(1) NOT NULL DEFAULT '0',
+  `viewer_lastLogin` datetime DEFAULT NULL,
+  `remember_token` varchar(255) DEFAULT NULL,
+  `remember_token_expires_at` datetime DEFAULT NULL,
+  `email_validated` tinyint(1) DEFAULT NULL,
+  `developer` tinyint(1) DEFAULT NULL,
+  `facebook_hash` varchar(255) DEFAULT NULL,
+  `facebook_username` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`viewer_id`),
+  KEY `ciministry.accountadmin_viewer_accountgroup_id_index` (`accountgroup_id`),
+  KEY `ciministry.accountadmin_viewer_viewer_userID_index` (`viewer_userID`),
+  CONSTRAINT `FK_viewer_grp` FOREIGN KEY (`accountgroup_id`) REFERENCES `accountadmin_accountgroup` (`accountgroup_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18950 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `accountadmin_vieweraccessgroup` (
+  `vieweraccessgroup_id` int(11) NOT NULL AUTO_INCREMENT,
+  `viewer_id` int(11) NOT NULL DEFAULT '0',
+  `accessgroup_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`vieweraccessgroup_id`),
+  KEY `ciministry.accountadmin_vieweraccessgroup_viewer_i` (`viewer_id`),
+  KEY `ciministry.accountadmin_vieweraccessgroup_accessgr` (`accessgroup_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=26107 DEFAULT CHARSET=latin1;
+
 CREATE TABLE `airports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(255) DEFAULT NULL,
@@ -25,7 +97,7 @@ CREATE TABLE `applns` (
   KEY `applns_preference1_id_index` (`preference1_id`),
   KEY `applns_preference2_id_index` (`preference2_id`),
   KEY `applns_as_intern_index` (`as_intern`)
-) ENGINE=InnoDB AUTO_INCREMENT=6592 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7905 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -37,7 +109,7 @@ CREATE TABLE `attachments` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `attributes_updated_ats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,7 +119,237 @@ CREATE TABLE `attributes_updated_ats` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33635 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=67558 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `campus_involvements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `added_by_id` int(11) DEFAULT NULL,
+  `graduation_date` date DEFAULT NULL,
+  `school_year_id` int(11) DEFAULT NULL,
+  `major` varchar(255) DEFAULT NULL,
+  `minor` varchar(255) DEFAULT NULL,
+  `last_history_update_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_campus_involvements_on_p_id_and_c_id_and_end_date` (`person_id`,`campus_id`,`end_date`),
+  KEY `index_campus_involvements_on_campus_id` (`campus_id`),
+  KEY `index_campus_involvements_on_ministry_id` (`ministry_id`),
+  KEY `index_campus_involvements_on_person_id` (`person_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9827 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cim_hrdb_access` (
+  `access_id` int(50) NOT NULL AUTO_INCREMENT,
+  `viewer_id` int(50) NOT NULL DEFAULT '0',
+  `person_id` int(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`access_id`),
+  KEY `ciministry.cim_hrdb_access_viewer_id_index` (`viewer_id`),
+  KEY `ciministry.cim_hrdb_access_person_id_index` (`person_id`),
+  CONSTRAINT `FK_access_person` FOREIGN KEY (`person_id`) REFERENCES `cim_hrdb_person` (`person_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18804 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_admin` (
+  `admin_id` int(1) NOT NULL AUTO_INCREMENT,
+  `person_id` int(50) NOT NULL DEFAULT '0',
+  `priv_id` int(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`admin_id`),
+  KEY `FK_hrdbadmin_person` (`person_id`),
+  KEY `FK_admin_priv` (`priv_id`),
+  CONSTRAINT `FK_admin_priv` FOREIGN KEY (`priv_id`) REFERENCES `cim_hrdb_priv` (`priv_id`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_hrdbadmin_person` FOREIGN KEY (`person_id`) REFERENCES `cim_hrdb_person` (`person_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_assignment` (
+  `assignment_id` int(50) NOT NULL AUTO_INCREMENT,
+  `person_id` int(50) NOT NULL DEFAULT '0',
+  `campus_id` int(50) NOT NULL DEFAULT '0',
+  `assignmentstatus_id` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`assignment_id`),
+  KEY `ciministry.cim_hrdb_assignment_person_id_index` (`person_id`),
+  KEY `ciministry.cim_hrdb_assignment_campus_id_index` (`campus_id`),
+  CONSTRAINT `FK_assign_campus` FOREIGN KEY (`campus_id`) REFERENCES `cim_hrdb_campus` (`campus_id`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_assign_person` FOREIGN KEY (`person_id`) REFERENCES `cim_hrdb_person` (`person_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8491 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_assignmentstatus` (
+  `assignmentstatus_id` int(10) NOT NULL AUTO_INCREMENT,
+  `assignmentstatus_desc` varchar(64) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`assignmentstatus_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `cim_hrdb_campus` (
+  `campus_id` int(50) NOT NULL AUTO_INCREMENT,
+  `campus_desc` varchar(128) NOT NULL DEFAULT '',
+  `campus_shortDesc` varchar(50) NOT NULL DEFAULT '',
+  `accountgroup_id` int(16) NOT NULL DEFAULT '0',
+  `region_id` int(8) NOT NULL DEFAULT '0',
+  `campus_website` varchar(128) NOT NULL DEFAULT '',
+  `campus_facebookgroup` varchar(128) NOT NULL,
+  `campus_gcxnamespace` varchar(128) NOT NULL,
+  `province_id` int(11) DEFAULT NULL,
+  `longitude` decimal(10,6) DEFAULT NULL,
+  `latitude` decimal(10,6) DEFAULT NULL,
+  PRIMARY KEY (`campus_id`),
+  KEY `ciministry.cim_hrdb_campus_region_id_index` (`region_id`),
+  KEY `ciministry.cim_hrdb_campus_accountgroup_id_index` (`accountgroup_id`),
+  KEY `index_ciministry.cim_hrdb_campus_on_longitude` (`longitude`),
+  KEY `index_ciministry.cim_hrdb_campus_on_latitude` (`latitude`),
+  CONSTRAINT `FK_campus_region` FOREIGN KEY (`region_id`) REFERENCES `cim_hrdb_region` (`region_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_country` (
+  `country_id` int(50) NOT NULL AUTO_INCREMENT,
+  `country_desc` varchar(50) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `country_shortDesc` varchar(50) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`country_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+CREATE TABLE `cim_hrdb_emerg` (
+  `emerg_id` int(16) NOT NULL AUTO_INCREMENT,
+  `person_id` int(16) NOT NULL DEFAULT '0',
+  `emerg_passportNum` varchar(32) NOT NULL DEFAULT '',
+  `emerg_passportOrigin` varchar(32) NOT NULL DEFAULT '',
+  `emerg_passportExpiry` date NOT NULL DEFAULT '0000-00-00',
+  `emerg_contactName` varchar(64) NOT NULL DEFAULT '',
+  `emerg_contactRship` varchar(64) NOT NULL DEFAULT '',
+  `emerg_contactHome` varchar(32) NOT NULL DEFAULT '',
+  `emerg_contactWork` varchar(32) NOT NULL DEFAULT '',
+  `emerg_contactMobile` varchar(32) NOT NULL DEFAULT '',
+  `emerg_contactEmail` varchar(32) NOT NULL DEFAULT '',
+  `emerg_birthdate` date NOT NULL DEFAULT '0000-00-00',
+  `emerg_medicalNotes` text NOT NULL,
+  `emerg_contact2Name` varchar(64) NOT NULL,
+  `emerg_contact2Rship` varchar(64) NOT NULL,
+  `emerg_contact2Home` varchar(64) NOT NULL,
+  `emerg_contact2Work` varchar(64) NOT NULL,
+  `emerg_contact2Mobile` varchar(64) NOT NULL,
+  `emerg_contact2Email` varchar(64) NOT NULL,
+  `emerg_meds` text NOT NULL,
+  `health_province_id` int(11) DEFAULT NULL,
+  `health_number` varchar(255) DEFAULT NULL,
+  `medical_plan_number` varchar(255) DEFAULT NULL,
+  `medical_plan_carrier` varchar(255) DEFAULT NULL,
+  `doctor_name` varchar(255) DEFAULT NULL,
+  `doctor_phone` varchar(255) DEFAULT NULL,
+  `dentist_name` varchar(255) DEFAULT NULL,
+  `dentist_phone` varchar(255) DEFAULT NULL,
+  `blood_type` varchar(255) DEFAULT NULL,
+  `blood_rh_factor` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `health_coverage_country` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`emerg_id`),
+  KEY `ciministry.cim_hrdb_emerg_person_id_index` (`person_id`),
+  CONSTRAINT `FK_emerg_person` FOREIGN KEY (`person_id`) REFERENCES `cim_hrdb_person` (`person_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11771 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_gender` (
+  `gender_id` int(50) NOT NULL AUTO_INCREMENT,
+  `gender_desc` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`gender_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_person` (
+  `person_id` int(50) NOT NULL AUTO_INCREMENT,
+  `person_fname` varchar(50) NOT NULL DEFAULT '',
+  `person_lname` varchar(50) NOT NULL DEFAULT '',
+  `person_legal_fname` varchar(50) NOT NULL,
+  `person_legal_lname` varchar(50) NOT NULL,
+  `person_phone` varchar(50) NOT NULL DEFAULT '',
+  `person_email` varchar(128) NOT NULL DEFAULT '',
+  `person_addr` varchar(128) NOT NULL DEFAULT '',
+  `person_city` varchar(50) NOT NULL DEFAULT '',
+  `province_id` int(50) NOT NULL DEFAULT '0',
+  `person_pc` varchar(50) NOT NULL DEFAULT '',
+  `gender_id` int(50) NOT NULL DEFAULT '0',
+  `person_local_phone` varchar(50) NOT NULL DEFAULT '',
+  `person_local_addr` varchar(128) NOT NULL DEFAULT '',
+  `person_local_city` varchar(50) NOT NULL DEFAULT '',
+  `person_local_pc` varchar(50) NOT NULL DEFAULT '',
+  `person_local_province_id` int(50) NOT NULL DEFAULT '0',
+  `cell_phone` varchar(255) DEFAULT NULL,
+  `local_valid_until` date DEFAULT NULL,
+  `title_id` int(11) DEFAULT NULL,
+  `country_id` int(11) DEFAULT NULL,
+  `person_local_country_id` int(11) DEFAULT NULL,
+  `person_mname` varchar(255) DEFAULT NULL,
+  `person_mentor_id` int(11) DEFAULT NULL,
+  `person_mentees_lft` int(11) DEFAULT NULL,
+  `person_mentees_rgt` int(11) DEFAULT NULL,
+  `facebook_url` varchar(255) DEFAULT NULL,
+  `civicrm_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`person_id`),
+  KEY `ciministry.cim_hrdb_person_gender_id_index` (`gender_id`),
+  KEY `ciministry.cim_hrdb_person_province_id_index` (`province_id`),
+  KEY `index_ciministry.cim_hrdb_person_on_person_email` (`person_email`),
+  KEY `index_ciministry.cim_hrdb_person_on_person_mentor_id` (`person_mentor_id`),
+  KEY `index_ciministry.cim_hrdb_person_on_person_fname` (`person_fname`),
+  KEY `index_ciministry.cim_hrdb_person_on_person_lname` (`person_lname`),
+  KEY `index_emu.cim_hrdb_person_on_civicrm_id` (`civicrm_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1391988377 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_person_year` (
+  `personyear_id` int(50) NOT NULL AUTO_INCREMENT,
+  `person_id` int(50) NOT NULL DEFAULT '0',
+  `year_id` int(50) NOT NULL DEFAULT '0',
+  `grad_date` date DEFAULT '0000-00-00',
+  PRIMARY KEY (`personyear_id`),
+  KEY `FK_cim_hrdb_person_year` (`person_id`),
+  KEY `1` (`year_id`),
+  CONSTRAINT `1` FOREIGN KEY (`year_id`) REFERENCES `cim_hrdb_year_in_school` (`year_id`),
+  CONSTRAINT `FK_year_person` FOREIGN KEY (`person_id`) REFERENCES `cim_hrdb_person` (`person_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3796 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE `cim_hrdb_priv` (
+  `priv_id` int(20) NOT NULL AUTO_INCREMENT,
+  `priv_accesslevel` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`priv_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_province` (
+  `province_id` int(50) NOT NULL AUTO_INCREMENT,
+  `province_desc` varchar(50) NOT NULL DEFAULT '',
+  `province_shortDesc` varchar(50) NOT NULL DEFAULT '',
+  `country_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`province_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_region` (
+  `region_id` int(50) NOT NULL AUTO_INCREMENT,
+  `reg_desc` varchar(64) NOT NULL DEFAULT '',
+  `country_id` int(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`region_id`),
+  KEY `FK_region_country` (`country_id`),
+  CONSTRAINT `FK_region_country` FOREIGN KEY (`country_id`) REFERENCES `cim_hrdb_country` (`country_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_staff` (
+  `staff_id` int(50) NOT NULL AUTO_INCREMENT,
+  `person_id` int(50) NOT NULL DEFAULT '0',
+  `is_active` int(1) NOT NULL DEFAULT '1',
+  `view_all_campuses` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`staff_id`),
+  UNIQUE KEY `unique_person` (`person_id`),
+  KEY `ciministry.cim_hrdb_staff_person_id_index` (`person_id`),
+  CONSTRAINT `FK_staff_person` FOREIGN KEY (`person_id`) REFERENCES `cim_hrdb_person` (`person_id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=483 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_title` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `desc` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cim_hrdb_year_in_school` (
+  `year_id` int(11) NOT NULL AUTO_INCREMENT,
+  `year_desc` char(50) NOT NULL DEFAULT '',
+  `position` int(11) DEFAULT NULL,
+  `translation_key` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`year_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `cost_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -64,7 +366,7 @@ CREATE TABLE `cost_items` (
   KEY `cost_items_type_index` (`type`),
   KEY `cost_items_year_index` (`year`),
   KEY `index_cost_items_on_event_group_id` (`event_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1313 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -93,7 +395,7 @@ CREATE TABLE `custom_element_required_sections` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=525 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=550 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `donation_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -109,7 +411,7 @@ CREATE TABLE `event_group_resource_projects` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=592 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `event_group_resources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -121,7 +423,7 @@ CREATE TABLE `event_group_resources` (
   `updated_at` datetime DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `event_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -156,7 +458,7 @@ CREATE TABLE `event_groups` (
   `record_of_funds_attachment_id` int(11) DEFAULT NULL,
   `support_address` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `eventgroup_coordinators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -166,7 +468,7 @@ CREATE TABLE `eventgroup_coordinators` (
   `updated_at` datetime DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `feedbacks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -190,7 +492,7 @@ CREATE TABLE `form_answers` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `form_answers_question_id_index` (`question_id`,`instance_id`),
   KEY `form_answers_instance_id_index` (`instance_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=793961 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=936653 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_element_flags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -201,7 +503,7 @@ CREATE TABLE `form_element_flags` (
   KEY `form_element_flags_element_id_index` (`element_id`),
   KEY `form_element_flags_flag_id_index` (`flag_id`),
   KEY `form_element_flags_value_index` (`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=5032 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5681 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_elements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -222,7 +524,7 @@ CREATE TABLE `form_elements` (
   KEY `form_elements_parent_id_index` (`parent_id`),
   KEY `form_elements_type_index` (`type`),
   KEY `form_elements_position_index` (`position`)
-) ENGINE=InnoDB AUTO_INCREMENT=40075 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=48734 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_flags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -243,7 +545,7 @@ CREATE TABLE `form_page_elements` (
   KEY `form_page_elements_page_id_index` (`page_id`),
   KEY `form_page_elements_element_id_index` (`element_id`),
   KEY `form_page_elements_position_index` (`position`)
-) ENGINE=InnoDB AUTO_INCREMENT=17757 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21971 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_page_flags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -254,7 +556,7 @@ CREATE TABLE `form_page_flags` (
   KEY `form_page_flags_page_id_index` (`page_id`),
   KEY `form_page_flags_flag_id_index` (`flag_id`),
   KEY `form_page_flags_value_index` (`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=869 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1263 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -266,7 +568,7 @@ CREATE TABLE `form_pages` (
   `updated_by_id` int(11) DEFAULT NULL,
   `hidden` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3403 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4268 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_question_options` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -280,7 +582,7 @@ CREATE TABLE `form_question_options` (
   KEY `form_question_options_option_index` (`option`),
   KEY `form_question_options_value_index` (`value`),
   KEY `form_question_options_position_index` (`position`)
-) ENGINE=InnoDB AUTO_INCREMENT=29279 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33783 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_questionnaire_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -293,14 +595,14 @@ CREATE TABLE `form_questionnaire_pages` (
   KEY `form_questionnaire_pages_questionnaire_id_index` (`questionnaire_id`),
   KEY `form_questionnaire_pages_page_id_index` (`page_id`),
   KEY `form_questionnaire_pages_position_index` (`position`)
-) ENGINE=InnoDB AUTO_INCREMENT=3403 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4268 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_reference_attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `reference_id` int(11) DEFAULT NULL,
   `questionnaire_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `forms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -313,7 +615,24 @@ CREATE TABLE `forms` (
   PRIMARY KEY (`id`),
   KEY `forms_questionnaire_id_index` (`questionnaire_id`),
   KEY `index_forms_on_event_group_id` (`event_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=399 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=493 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `involvement_histories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `school_year_id` int(11) DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `ministry_role_id` int(11) DEFAULT NULL,
+  `campus_involvement_id` int(11) DEFAULT NULL,
+  `ministry_involvement_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4761 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `manual_donations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -327,7 +646,69 @@ CREATE TABLE `manual_donations` (
   `conversion_rate` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `manual_donations_motivation_code_index` (`motivation_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4896 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6085 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `ministries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `fax` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `updated_at` date DEFAULT NULL,
+  `ministries_count` int(11) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `lft` int(11) DEFAULT NULL,
+  `rgt` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_ministries_on_parent_id` (`parent_id`),
+  KEY `index_emu.ministries_on_lft` (`lft`),
+  KEY `index_emu.ministries_on_rgt` (`rgt`),
+  KEY `index_emu.ministries_on_parent_id` (`parent_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ministry_campuses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_ministry_campuses_on_ministry_id_and_campus_id` (`ministry_id`,`campus_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ministry_involvements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `admin` tinyint(1) DEFAULT NULL,
+  `ministry_role_id` int(11) DEFAULT NULL,
+  `responsible_person_id` int(11) DEFAULT NULL,
+  `last_history_update_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_ministry_involvements_on_person_id` (`person_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14714 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ministry_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `involved` tinyint(1) DEFAULT NULL,
+  `translation_key` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_ministry_roles_on_ministry_id` (`ministry_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `notification_acknowledgments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -336,7 +717,7 @@ CREATE TABLE `notification_acknowledgments` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `notifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -361,7 +742,30 @@ CREATE TABLE `optin_cost_items` (
   PRIMARY KEY (`id`),
   KEY `optin_cost_items_profile_id_index` (`profile_id`),
   KEY `optin_cost_items_cost_item_id_index` (`cost_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2342 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2560 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `person_extras` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `major` varchar(255) DEFAULT NULL,
+  `minor` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `staff_notes` varchar(255) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` varchar(255) DEFAULT NULL,
+  `perm_start_date` date DEFAULT NULL,
+  `perm_end_date` date DEFAULT NULL,
+  `perm_dorm` varchar(255) DEFAULT NULL,
+  `perm_room` varchar(255) DEFAULT NULL,
+  `perm_alternate_phone` varchar(255) DEFAULT NULL,
+  `curr_start_date` date DEFAULT NULL,
+  `curr_end_date` date DEFAULT NULL,
+  `curr_dorm` varchar(255) DEFAULT NULL,
+  `curr_room` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_person_extras_on_person_id` (`person_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22207 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `plugin_schema_info` (
   `plugin_name` varchar(255) DEFAULT NULL,
@@ -383,7 +787,7 @@ CREATE TABLE `prep_item_categories` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `prep_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -398,7 +802,7 @@ CREATE TABLE `prep_items` (
   `prep_item_category_id` int(11) DEFAULT NULL,
   `paperwork` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=237 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `prep_items_projects` (
   `prep_item_id` int(11) NOT NULL,
@@ -411,7 +815,7 @@ CREATE TABLE `processor_forms` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `processor_forms_appln_id_index` (`appln_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2806 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3464 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `processors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -421,7 +825,7 @@ CREATE TABLE `processors` (
   PRIMARY KEY (`id`),
   KEY `processors_project_id_index` (`project_id`),
   KEY `processors_viewer_id_index` (`viewer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=496 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=650 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `profile_donations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -444,7 +848,7 @@ CREATE TABLE `profile_notes` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=313 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=407 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `profile_prep_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -457,7 +861,7 @@ CREATE TABLE `profile_prep_items` (
   `received_at` datetime DEFAULT NULL,
   `completed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10966 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14881 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `profile_travel_segments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -471,7 +875,7 @@ CREATE TABLE `profile_travel_segments` (
   KEY `profile_travel_segments_profile_id_index` (`profile_id`),
   KEY `profile_travel_segments_travel_segment_id_index` (`travel_segment_id`),
   KEY `profile_travel_segments_position_index` (`position`)
-) ENGINE=InnoDB AUTO_INCREMENT=8140 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10153 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `profiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -511,7 +915,7 @@ CREATE TABLE `profiles` (
   KEY `profiles_locked_by_index` (`locked_by`),
   KEY `profiles_withdrawn_by_index` (`withdrawn_by`),
   KEY `profiles_reason_id_index` (`reason_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7707 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9248 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `project_administrators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -521,7 +925,7 @@ CREATE TABLE `project_administrators` (
   PRIMARY KEY (`id`),
   KEY `project_administrators_project_id_index` (`project_id`),
   KEY `project_administrators_viewer_id_index` (`viewer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=271 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `project_directors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -531,7 +935,7 @@ CREATE TABLE `project_directors` (
   PRIMARY KEY (`id`),
   KEY `project_directors_project_id_index` (`project_id`),
   KEY `project_directors_viewer_id_index` (`viewer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=347 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=408 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `project_donations` (
   `participant_motv_code` varchar(10) NOT NULL DEFAULT '',
@@ -545,7 +949,7 @@ CREATE TABLE `project_donations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   KEY `project_donations_participant_motv_code_index` (`participant_motv_code`)
-) ENGINE=MyISAM AUTO_INCREMENT=40683 DEFAULT CHARSET=latin1 COMMENT='Truncated and re-loaded nightly by a DTS pkg on SQL2000-SRV';
+) ENGINE=MyISAM AUTO_INCREMENT=47971 DEFAULT CHARSET=latin1 COMMENT='Truncated and re-loaded nightly by a DTS pkg on SQL2000-SRV';
 
 CREATE TABLE `project_staffs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -555,7 +959,7 @@ CREATE TABLE `project_staffs` (
   PRIMARY KEY (`id`),
   KEY `project_staffs_project_id_index` (`project_id`),
   KEY `project_staffs_viewer_id_index` (`viewer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=703 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=806 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `projects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -573,7 +977,7 @@ CREATE TABLE `projects` (
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_projects_on_event_group_id` (`event_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=366 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=423 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `projects_coordinators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -582,7 +986,7 @@ CREATE TABLE `projects_coordinators` (
   `updated_at` datetime DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `questionnaires` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -590,7 +994,7 @@ CREATE TABLE `questionnaires` (
   `type` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=405 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=499 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `reason_for_withdrawals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -608,7 +1012,7 @@ CREATE TABLE `reference_emails` (
   `event_group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_reference_emails_on_event_group_id` (`event_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=992 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1146 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `reference_instances` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -636,7 +1040,7 @@ CREATE TABLE `reference_instances` (
   KEY `appln_references_appln_id_index` (`instance_id`),
   KEY `appln_references_status_index` (`status`),
   KEY `appln_references_access_key_index` (`access_key`)
-) ENGINE=InnoDB AUTO_INCREMENT=10247 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12856 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `report_elements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -648,7 +1052,7 @@ CREATE TABLE `report_elements` (
   `heading` varchar(255) DEFAULT NULL,
   `cost_item_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2412 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2782 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `report_model_methods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -671,7 +1075,7 @@ CREATE TABLE `reports` (
   `include_applying` tinyint(1) DEFAULT '0',
   `include_staff` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `resource_projects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -694,7 +1098,7 @@ CREATE TABLE `resources` (
   `updated_at` datetime DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) NOT NULL,
@@ -710,7 +1114,17 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=1142868 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2042254 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `staff_assignments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `ministry_role_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `support_coaches` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -720,7 +1134,7 @@ CREATE TABLE `support_coaches` (
   PRIMARY KEY (`id`),
   KEY `support_coaches_project_id_index` (`project_id`),
   KEY `support_coaches_viewer_id_index` (`viewer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `taggings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -731,7 +1145,7 @@ CREATE TABLE `taggings` (
   KEY `taggings_tagee_type_index` (`tagee_type`),
   KEY `taggings_tagee_id_index` (`tagee_id`),
   KEY `taggings_tag_id_index` (`tag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1899 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2233 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -739,7 +1153,7 @@ CREATE TABLE `tags` (
   `event_group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_tags_on_event_group_id` (`event_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `travel_segments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -761,7 +1175,7 @@ CREATE TABLE `travel_segments` (
   KEY `travel_segments_arrival_time_index` (`arrival_time`),
   KEY `travel_segments_flight_no_index` (`flight_no`),
   KEY `index_travel_segments_on_event_group_id` (`event_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2465 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3119 DEFAULT CHARSET=latin1;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
 
@@ -1026,6 +1440,10 @@ INSERT INTO schema_migrations (version) VALUES ('20121127233906');
 INSERT INTO schema_migrations (version) VALUES ('20121203193119');
 
 INSERT INTO schema_migrations (version) VALUES ('20121203210528');
+
+INSERT INTO schema_migrations (version) VALUES ('20140228223919');
+
+INSERT INTO schema_migrations (version) VALUES ('20140303163727');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

@@ -1,3 +1,4 @@
+<div style="margin: 15px">
 <p>
   <b>Person:</b>
   <%=h @staff.person %>
@@ -28,5 +29,27 @@
   <%=h @staff.is_active %>
 </p>
 
+<p>
+  <b>Campuses:</b>
+  <% if @staff.view_all_campuses %>
+    All Campuses (<%= link_to "Remove", staff_assignment_path("all", :staff_id => @staff.id), :method => :delete %>)
+  <% else %>
+  <ul>
+  <% @staff.staff_assignments.each do |staff_assignment| %>
+    <li><%= staff_assignment.campus.name %> (<%= link_to "Remove", staff_assignment_path(staff_assignment), :method => :delete %>)</li>
+  <% end %>
+  </ul>
+  <% end %>
+</p>
 
-<%= link_to 'Back', staff_path %>
+<% unless @staff.view_all_campuses %>
+  <% form_tag staff_assignments_path do %>
+    <p>
+    Add to campus: 
+    <%= select_tag "campus_id", options_for_select([['Select campus', nil], ['All campuses', 'all'], ''] + Campus.all(:order => Campus._(:name)).collect{ |c| [ c.name, c.id ] }) %>
+    <%= hidden_field_tag "person_id", @staff.person_id %>
+    <%= hidden_field_tag "staff_id", @staff.id %>
+    <%= submit_tag "Add" %>
+  <% end %>
+  </div>
+<% end %>

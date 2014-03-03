@@ -3,6 +3,7 @@ class StaffController < ApplicationController
 
   before_filter :ensure_projects_coordinator
   before_filter :set_page_title
+  before_filter :set_layout
 
   # GET /staffs
   # GET /staffs.xml
@@ -21,7 +22,7 @@ class StaffController < ApplicationController
     @staff = Staff.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render :layout => false }
       format.xml  { render :xml => @staff }
     end
   end
@@ -46,6 +47,7 @@ class StaffController < ApplicationController
   # POST /staffs.xml
   def create
     @staff = Staff.find_or_create_by_person_id(params[:person_id])
+    @staff.add_campus(Campus.find(params[:campus_id]))
 
     respond_to do |format|
       if @staff.save
