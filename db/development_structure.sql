@@ -457,6 +457,7 @@ CREATE TABLE `event_groups` (
   `forward_to_cas` tinyint(1) DEFAULT '0',
   `record_of_funds_attachment_id` int(11) DEFAULT NULL,
   `support_address` text,
+  `support_email` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=latin1;
 
@@ -1114,7 +1115,16 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=2042254 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2042256 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `value` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `staff_assignments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1124,7 +1134,7 @@ CREATE TABLE `staff_assignments` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `support_coaches` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1444,6 +1454,10 @@ INSERT INTO schema_migrations (version) VALUES ('20121203210528');
 INSERT INTO schema_migrations (version) VALUES ('20140228223919');
 
 INSERT INTO schema_migrations (version) VALUES ('20140303163727');
+
+INSERT INTO schema_migrations (version) VALUES ('20140304225227');
+
+INSERT INTO schema_migrations (version) VALUES ('20140304230800');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

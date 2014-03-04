@@ -177,19 +177,13 @@
     </div>
     <% if @eg || @show_contact_emails_override %>
       <div id="footer" class="inconspicuous_hr">
-        <!-- nix the north border, it looks better. -->
-        <b>Questions?</b><br />
-        Power to Change - Students - susan.dossantos@powertochange.org<br />
-        LeaderImpact Group - judyh@leaderimpactgroup.com<br />
-        Athletes in Action - morgand@athletesinaction.com<br />
-        Drime - info@drime.com<br />
-        MinistryNet - ministrynet@ccci.org<br />
-        GAiN - lifeteams@globalaid.net<br />
-				<br/>
-			<b>General Inquiries:</b>pat.help@powertochange.org<br/>
-			<br/>
-			Online help can be found <a href="http://resources.campusforchrist.org/index.php/Project_Application_Tool">here</a>.
-        <br/>
+        <% if @eg.support_email %>
+          <b>Questions?</b><br />
+          <%= @eg.title %> - <%= mail_to @eg.support_email %>
+          <br/>
+          <br/>
+        <% end %>
+        <%= Setting.find_by_name("footer").try(:value) %>
       </div>
     <% end %>
       
