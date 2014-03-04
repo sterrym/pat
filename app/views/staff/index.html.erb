@@ -33,7 +33,7 @@
     <td><%=h staff.email %></td>
     <td><%=h staff.gcx ? "Yes" : "No" %></td>
     <td><%=h staff.is_active == 1 ? "Yes" : "No" %></td>
-    <td><%= link_to 'Remove', "javascript:removeStaff(#{staff.id});" %> <%= link_to "Campuses", "javascript:editStaff(#{staff.id})" %></td>
+    <td><%= link_to "Campuses", "javascript:editStaff(#{staff.id})" %> <%= link_to 'Remove', "javascript:removeStaff(#{staff.id});" %></td>
   </tr>
 <% end %>
 </table>
@@ -77,10 +77,11 @@
   });
 
   function removeStaff(staff_id) {
-    jQuery.post("/staff/" + staff_id + ".js", { "_method": "DELETE" }, function() {
-      jQuery("tr.staff_"+staff_id).fadeOut();
-    });
-    console.log(staff_id);
+    if (confirm("You are removing this staff from the PAT. Are you certain you want to do this?")) {
+      jQuery.post("/staff/" + staff_id + ".js", { "_method": "DELETE" }, function() {
+        jQuery("tr.staff_"+staff_id).fadeOut();
+      });
+    }
   }
 
   function editStaff(staff_id) {
