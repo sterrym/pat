@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :settings
+
   map.resources :staff, :collection => { :search => :get }
 
   map.resources :staff_assignments
