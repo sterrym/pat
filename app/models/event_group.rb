@@ -169,7 +169,7 @@ class EventGroup < Node
     support_address.present? ? support_address.gsub("\n", "<br/>") : parent.try(:support_address_html).to_s
   end
 
-  def support_email
-    self[:support_email].present? ? self[:support_email] : parent.try(:support_email)
+  def support_eventgroup
+    self[:support_email].present? ? self : parent
   end
 end

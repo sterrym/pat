@@ -177,9 +177,9 @@
     </div>
     <% if @eg || @show_contact_emails_override %>
       <div id="footer" class="inconspicuous_hr">
-        <% if @eg.support_email %>
+        <% if @eg.support_eventgroup %>
           <b>Questions?</b><br />
-          <%= @eg.title %> - <%= mail_to @eg.support_email %>
+          <%= @eg.support_eventgroup.title %> - <%= mail_to @eg.support_eventgroup.support_email %>
           <br/>
           <br/>
         <% end %>
