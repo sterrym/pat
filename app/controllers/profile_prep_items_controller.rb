@@ -45,7 +45,7 @@ class ProfilePrepItemsController < ApplicationController
     end
   end
 
-  def set_checkedin
+  def set_checked_in
     @profile_prep_item = ProfilePrepItem.find_or_create_by_profile_id_and_prep_item_id(params[:profile_id], params[:prep_item_id])
     @profile_prep_item.update_attribute(:checked_in, params[:checked_in] == "true")
     respond_to do |format|
