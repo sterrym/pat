@@ -43,7 +43,7 @@ class ProfilesViewerController < ViewOnlineController
   end
 
   def summary
-     @submenu_title = 'View Appln Summary'
+    @submenu_title = 'View Appln Summary'
     index
   end
 
@@ -74,7 +74,9 @@ Sorry, this link only works for students.  If you need to withdraw an applicatio
     ### questionnaire methods
   
     def get_filter
-      if %w(summary bulk_summary_forms).include? params[:action]
+      referrer_action = request.referer.split('/').last
+      if (%w(summary bulk_summary_forms).include?(params[:action])) || 
+        (referrer_action && %w(summary bulk_summary_forms).include?(referrer_action))
         { :filter => [ "in_summary_view" ], :default => false }
       elsif %w(entire).include? params[:action]
         if @can_view_confidential
