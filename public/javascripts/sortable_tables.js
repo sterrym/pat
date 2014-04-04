@@ -141,7 +141,7 @@ update(SortableManager.prototype, {
                         try {
                             val = obj.replace(/\$?(\-?\d+\.?\d*)/,"$1");
                             if (val.length > 0) {
-                                obj = Number(val.gsub(',',''));
+                                obj = Number(val.replace(/ |\n|,/g, ''));
                             } else {
                                 obj = 0;
                             }
