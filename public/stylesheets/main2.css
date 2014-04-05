@@ -712,3 +712,6 @@ div.yui-skin-cnxbar {
 
 .dashboard_table tr.odd {
   background-color: #e9f1fe; }
+
+.datagrid thead th, .datagrid thead td {
+  z-index: 5; }

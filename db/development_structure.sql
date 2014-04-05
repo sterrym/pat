@@ -197,7 +197,7 @@ CREATE TABLE `cim_hrdb_campus` (
   KEY `ciministry.cim_hrdb_campus_accountgroup_id_index` (`accountgroup_id`),
   KEY `index_ciministry.cim_hrdb_campus_on_longitude` (`longitude`),
   KEY `index_ciministry.cim_hrdb_campus_on_latitude` (`latitude`)
-) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `cim_hrdb_country` (
   `country_id` int(50) NOT NULL AUTO_INCREMENT,
@@ -556,7 +556,7 @@ CREATE TABLE `form_page_flags` (
   KEY `form_page_flags_page_id_index` (`page_id`),
   KEY `form_page_flags_flag_id_index` (`flag_id`),
   KEY `form_page_flags_value_index` (`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=1264 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1265 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `form_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -860,8 +860,11 @@ CREATE TABLE `profile_prep_items` (
   `checked_in` tinyint(1) DEFAULT '0',
   `received_at` datetime DEFAULT NULL,
   `completed_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15887 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `index_profile_prep_items_on_prep_item_id` (`prep_item_id`),
+  KEY `index_profile_prep_items_on_profile_id` (`profile_id`),
+  KEY `index_profile_prep_items_on_prep_item_id_and_profile_id` (`prep_item_id`,`profile_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15933 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `profile_travel_segments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1114,7 +1117,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=2149946 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2149949 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1459,6 +1462,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140304225227');
 INSERT INTO schema_migrations (version) VALUES ('20140304230800');
 
 INSERT INTO schema_migrations (version) VALUES ('20140328193302');
+
+INSERT INTO schema_migrations (version) VALUES ('20140405001244');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

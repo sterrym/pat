@@ -11,7 +11,7 @@
   <%= th @columns.keys[1].to_s %>
   <% i = 2 -%>
   <% while i < @columns.length -%>
-    <td colspan='2'><%= @columns.keys[i].to_s %></td>
+    <td colspan='2'><%= @columns.keys[i] %></td>
     <% i += 1 %>
   <% end %>
   </tr>
@@ -29,3 +29,4 @@
 <% end %>
 
 <%= render :partial => 'generic_report_from_struct', :locals => { :struct => @participants } %>
+<%= render :partial => "shared/pinned_datagrid_headers" %>

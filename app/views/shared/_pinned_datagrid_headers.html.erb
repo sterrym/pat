@@ -1,0 +1,26 @@
+<script>
+  function position_header() {
+    if (jQuery(window).scrollTop() > tableTop) { 
+      jQuery(".datagrid thead th, .datagrid thead td").css("position", "relative").css("top", jQuery(window).scrollTop() - tableTop); 
+    } else { 
+      jQuery(".datagrid thead th, .datagrid thead td").css("position", "static"); 
+    } 
+  }
+
+  function position_firstcolumn() {
+    if (jQuery(window).scrollLeft() > firstcolumnLeft) { 
+      jQuery(".datagrid tbody tr td:first-child").css("position", "relative").css("left", jQuery(window).scrollLeft() - firstcolumnLeft); 
+    } else { 
+      jQuery(".datagrid tbody tr td:first-child").css("position", "static"); 
+    } 
+  }
+
+  jQuery(function() { 
+    tableTop = jQuery(".datagrid thead").position().top; 
+    firstcolumnLeft = jQuery(".datagrid tbody tr td:first-child").position().left; 
+    jQuery(".datagrid tbody tr td:first-child").css("background", "white");
+ 
+    jQuery(window).scroll(function() { position_header(); position_firstcolumn(); }); 
+    jQuery(".datagrid thead").click(function() { position_header(); position_firstcolumn(); });
+  });
+</script>
