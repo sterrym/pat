@@ -33,6 +33,8 @@ class Withdrawn < Profile
     transitions :to => :staff_profile_dropped, :from => :uninitialized
   end
 
+  def support_coach() nil end
+
   def send_withdrawn_notifications
     return unless appln && status != 'staff_profile_dropped'
 
