@@ -26,11 +26,13 @@ class MyOrderedHash < Hash
       params[0].each_with_index do |k,i|
         if i % 2 == 0
           v = params[0][i+1]
+          # handle case where the key already exists by appending a number after the key name, starting with 2
           if self[k]
-            i = 2
+            j = 2
             k_orig = k
             while self[k]
-              k = "#{k_orig} #{i}"
+              k = "#{k_orig} #{j}"
+              j += 1
             end
           end
           self[k] = v
