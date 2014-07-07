@@ -802,13 +802,12 @@ class ReportsController < ApplicationController
   
   def travel_list
     @columns = MyOrderedHash.new [
-    :title, 'string',
-    :last_name, 'string', 
-    :first_name, 'string',
+    :name, 'string',
+    :legal_last_name, 'string', 
+    :legal_first_name, 'string', 
     @include_pref1_applns ? [ :status, 'string' ] : nil,
     @many_projects ? [ :project, 'string' ] : nil,
     :gender, 'string',
-    :staff, 'string',
     :birthdate, 'string',
     :passport_number, 'string',
     :passport_expiry, 'string',
@@ -824,26 +823,29 @@ class ReportsController < ApplicationController
       passport_info = get_passport_info(ac, p, a, ec_entry)
 
       gender = p.try(:gender) || '?'
-      title = p.try(:title).try(:desc) || ''
       
       if v && p
         last_name = p.preferred_last_name.capitalize
         first_name = p.preferred_first_name.capitalize
+        legal_last_name = p.legal_last_name
+        legal_first_name = p.legal_first_name
       elsif v && !p
         last_name = 'no person'
         first_name = "vid #{v.username}"
+        legal_last_name = ''
+        legal_first_name = ''
       elsif !v && !p
         last_name = 'no viewer'
         first_name = ''
         first_name = ''
+        legal_last_name = ''
+        legal_first_name = ''
       end
 
-      student = if v then (v.is_current_staff?(@eg) ? 'staff' : '') else '?' end
-
-      @participants << [ title, last_name, first_name,
+      @participants << [ "#{first_name} #{last_name}", legal_last_name, legal_first_name,
         @include_pref1_applns ? (ac ? 'accepted' : a.status) : nil, 
         @many_projects ? (ac ? ac.project.title : a.preference1.title) : nil, 
-        gender, student, birthdate, passport_info, 
+        gender, birthdate, passport_info, 
         ].compact
     end
     
@@ -1191,8 +1193,6 @@ class ReportsController < ApplicationController
 
       @participants << row
     end
-
-    debugger
 
     render_report @participants
   end
