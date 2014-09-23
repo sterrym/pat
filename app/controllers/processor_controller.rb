@@ -49,8 +49,7 @@ class ProcessorController < ApplicationController
       :support_claimed => 0, :support_coach_id => params[:support_coach_id], 
       :accepted_by_viewer_id => @viewer.id, :as_intern => params[:as_intern],
       :viewer_id => @appln.viewer_id, :viewer => @viewer, :locked_by => nil,
-      :as_team_leader => params[:as_team_leader],
-
+      :as_team_leader => params[:as_team_leader]
     
     profile = Profile.find(@profile.id) # reload to make the new type catch
     profile.accept!
