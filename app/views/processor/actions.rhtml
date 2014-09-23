@@ -38,7 +38,11 @@
               :locals => { :name => 'support_coach_id', :current => '', :project => @project } %>
             <% if @appln.as_intern? %>
               <%= select_tag("as_intern", 
-              options_for_select([['as intern', true], ['not as intern', false]], 'as intern')) %>
+              options_for_select([['as intern', true], ['not as intern', false]], true)) %>
+            <% end %>
+            <% if @appln.as_team_leader? %>
+              <%= select_tag("as_team_leader", 
+              options_for_select([['as team_leader', true], ['not as team_leader', false]], true)) %>
             <% end %>
             <%= submit_tag "Accept", :confirm => "Are you sure you?" %>
           </form>
