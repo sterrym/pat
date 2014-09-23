@@ -170,6 +170,6 @@ class EventGroup < Node
   end
 
   def support_eventgroup
-    self[:support_email].present? ? self : parent
+    self[:support_email].present? ? self : parent.try(:support_eventgroup)
   end
 end
