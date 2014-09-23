@@ -51,7 +51,12 @@
     <% content_for(:form) do %>
       Accepted for <%= project_select("participants", :default_first => true, :include_all => true) %> <%= html_excel_submit_links("participants") %><BR/>
       <I>Lists participants -- people accepted for a given project.</I><BR/>
-      <%= check_box_tag "hide_interns", "true" %> Hide interns from this report
+      <% if @eg.has_interns %>
+        <%= check_box_tag "hide_interns", "true" %> <%= label_tag "hide_interns", "Hide interns from this report" %>
+      <% end %>
+      <% if @eg.has_team_leaders %>
+        <%= check_box_tag "hide_team_leaders", "true" %> <%= label_tag "hide_team_leaders", "Hide team leaders from this report" %>
+      <% end %>
     <% end %>
     <%= render :partial => "report_form", :locals => { :action => "participants" } %>
   </LI>
@@ -80,7 +85,7 @@
     <% content_for(:form) do %>
       Travel List for <%= project_select("travel_list", :default_first => false) %> <%= html_excel_submit_links("travel_list") %><BR/>
       <I>Lists all applicants and their passport information such as birthdate, passport number, passport expiry and passport country.</I><BR/>
-      <%= check_box_tag "include_pref1s", "true" %> Include in-progress applications with preference 1 as this project
+      <%= check_box_tag "include_pref1s", "true" %> <%= label_tag "include_pref1s", "Include in-progress applications with preference 1 as this project" %>
     <% end %>
     <%= render :partial => "report_form", :locals => { :action => "travel_list" } %>
   </LI>
@@ -97,18 +102,30 @@
       <%= html_excel_submit_links("travel_segment") %> | <%= link_to "custom", :action => "custom_itinerary_report" %>
       <BR/>
       <I>Lists all project participants assigned to a given travel segment (flight).</I><BR/>
-      <%= check_box_tag "include_profiles", "true" %> Include each person's entire profile, and highlight this travel segment
+      <%= check_box_tag "include_profiles", "true" %> <%= label_tag "include_profiles", "Include each person's entire profile, and highlight this travel segment" %>
     <% end %>
     <%= render :partial => "report_form", :locals => { :action => "travel_segment" } %>
   </LI>
+  <% if @eg.has_interns? %>
   <LI>
     <% content_for(:form) do %>
       Interns for <%= project_select("interns", :default_first => true, :include_all => true) %> <%= html_excel_submit_links("interns") %><BR/>
       <I>Lists all applicants that have been accepted as interns. To include the people currently applying as interns use the checkbox.</I><BR/>
-      <%= check_box_tag "include_pref1s", "true" %> Include in-progress applications with preference 1 as this project
+      <%= check_box_tag "include_pref1s", "true" %> <%= label_tag "include_pref1s", "Include in-progress applications with preference 1 as this project" %>
     <% end %>
     <%= render :partial => "report_form", :locals => { :action => "interns" } %>
   </LI>
+  <% end %>
+  <% if @eg.has_team_leaders? %>
+  <LI>
+    <% content_for(:form) do %>
+      Team leaders for <%= project_select("team_leaders", :default_first => true, :include_all => true) %> <%= html_excel_submit_links("team leaders") %><BR/>
+      <I>Lists all applicants that have been accepted as team leaders. To include the people currently applying as team leaders use the checkbox.</I><BR/>
+      <%= check_box_tag "include_pref1s", "true" %> <%= label_tag "include_pref1s", "Include in-progress applications with preference 1 as this project" %>
+    <% end %>
+    <%= render :partial => "report_form", :locals => { :action => "team_leaders" } %>
+  </LI>
+  <% end %>
   <LI>
     <% content_for(:form) do %>
       Cost Items for <%= project_select("cost_items", :default_first => false, :include_all => true) %> for <%= project_observe_to_cost_items("cost_items") %> <%= html_excel_submit_links("cost_items") %>

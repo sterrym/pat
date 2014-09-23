@@ -11,8 +11,8 @@ class ReportsController < ApplicationController
   before_filter :set_projects, :only => [ :participants, :registrants, :crisis_management, :parental_emails, 
     :ticketing_requests, :funding_status, :funding_details, :viewers_with_profile_for_project,
     :funding_details_costing, :funding_details, :travel_list, :project_stats, :funding_costs,
-    :itinerary, :interns, :summary_forms, :cost_items_for_project, :cost_items, :manual_donations, :prep_items, 
-    :prep_items_for_project, :cost_items2, :changed_always_editable_answer_after_date ]
+    :itinerary, :interns, :team_leaders, :summary_forms, :cost_items_for_project, :cost_items, :manual_donations, 
+    :prep_items, :prep_items_for_project, :cost_items2, :changed_always_editable_answer_after_date ]
   before_filter :set_viewer, :only => [ :funding_details_costing, :funding_details, :funding_costs ]
   before_filter :set_travel_segment, :only => [ :travel_segment, :custom_itinerary ]
   before_filter :set_cost_items, :only => [ :cost_items ]
@@ -148,11 +148,15 @@ class ReportsController < ApplicationController
 
     @page_title = @projects.collect(&:title).join(', ') + " Participants"
 
+    conditions = []
+    conditions << "(as_intern is false OR as_intern is null)" if params[:hide_interns] == 'true'
+    conditions << "(as_team_leader is false OR as_team_leader is null)" if params[:hide_team_leaders] == 'true'
+
     acceptances = Acceptance.find_all_by_project_id(@projects_ids, :include => [
         :project
       ],
       :select => mk_sel("Person.last_name, Person.first_name, Person.gender_id, Campus.campus_shortDesc, Assignment.assignmentstatus_id, YearInSchool.year_desc, Project.title, Profile.status, Profile.type, Person.person_local_phone, Person.cell_phone, Person.person_email"),
-      :conditions => params[:hide_interns] == 'true' ? "as_intern is false OR as_intern is null" : ""
+      :conditions => conditions.join(" AND ")
     )
 
     #@rows = [ [  ] ]
@@ -176,52 +180,6 @@ class ReportsController < ApplicationController
     render_report @rows
   end
  
-  def project_participants_old
-    @columns = MyOrderedHash.new [
-    :last_name, 'string', 
-    :first_name, 'string',
-    :gender, 'string',
-    :email, 'string',
-    :phone, 'string',
-    :cell, 'string',
-    :campus, 'string',
-    :year, 'int',
-    :project, 'string',
-    :leadership, 'string',
-    :training, 'string',
-    :intern, 'string'
-    ]
-    
-    #    current_acceptances = Acceptance.find_by_sql("select appln_id, viewer_id, project_id, `year` from acceptances ac, applns ap, forms f " + 
-    #                          "where ac.appln_id = ap.id and ap.form_id = f.id and f.year = #{$year} and project_id in (#{@projects_ids.join(',')})")
-    @participants = []
-    #    current_acceptances.each do |ac|
-    loop_reports_viewers(@projects_ids, @include_pref1_applns) do |ac,a,v,p|
-      
-      if !v.is_student?(@eg) || p.nil?
-        next
-      end
-      pf = a.processor_form
-      
-      leadership = extract_form_answer(:leadership_rating, pf)
-      training = extract_form_answer(:training_rating, pf)
-      phone = extract_form_answer(:phone, a)
-      cell = extract_form_answer(:cell, a)
-      
-      gender = p.gender
-      
-      @participants << ProjectParticipant.new(
-        p.preferred_last_name, p.preferred_first_name, gender, p.person_email, phone, cell, (p.campus ? p.campus_shortDesc : ''), 
-        extract_form_answer(:campus_year, a), ac.project.title, leadership, training,
-        (ac && ac.as_intern? ? 'intern' : '')
-      )
-      
-      false # send a false back since we use our own participants list
-    end
-    @page_title = "#{@eg.title} #{@project_title} Participants"
-    render_report @participants
-  end
-  
   CMRegistrant = Struct.new(:reg, :with_group, :plans)
   def cm
     # apparently everyone should be able to see everyone's cm 2007 plans...
@@ -546,7 +504,7 @@ class ReportsController < ApplicationController
     render_report @registrants
   end
   
-  StatEntry = Struct.new(:project, :started, :submitted, :completed, :accepted, :interns, :total, :declined, :withdrawn)
+  StatEntry = Struct.new(:project, :started, :submitted, :completed, :accepted, :interns_and_team_leaders, :interns, :team_leaders, :total, :declined, :withdrawn)
   def project_stats
     
     @columns = MyOrderedHash.new [
@@ -555,11 +513,13 @@ class ReportsController < ApplicationController
     :submitted, 'int',
     :completed, 'int',
     :accepted, 'int',
-    :interns, 'int',
+    ([:interns_and_team_leaders, 'int'] if @eg.has_team_leaders && @eg.has_interns),
+    ([:interns, 'int'] if @eg.has_interns),
+    ([:team_leaders, 'int'] if @eg.has_team_leaders),
     :total_first_5, 'int',
     :declined, 'int',
     :withdrawn, 'int'
-    ]
+    ].compact.flatten
     
     # special case for people assigned to the regional/national campus
     # they can see everything
@@ -569,6 +529,10 @@ class ReportsController < ApplicationController
 
     @stats = []
     totals = {}
+    sql_intern = "(as_intern = 1)"
+    sql_team_leader = "(as_team_leader = 1)"
+    sql_not_intern = "(as_intern IS NULL OR as_intern = 0)"
+    sql_not_team_leader = "(as_team_leader IS NULL OR as_team_leader = 0)"
     @projects.each do |p|
       stat = StatEntry.new(p.title,
 
@@ -578,29 +542,46 @@ class ReportsController < ApplicationController
       
       Applying.find_all_by_project_id_and_status(p.id, 'completed').size,
       
-      Acceptance.find_all_by_project_id_and_as_intern(p.id, false).size + 
-      Acceptance.find_all_by_project_id_and_as_intern(p.id, nil).size,
-      Acceptance.find_all_by_project_id_and_as_intern(p.id, true).size,
+      Acceptance.find(:all, :conditions => ["project_id = ? AND #{sql_not_intern} AND #{sql_not_team_leader}", p.id]).size, # accepted
+      @eg.has_team_leaders && @eg.has_interns? ?
+        Acceptance.find(:all, :conditions => ["project_id = ? AND #{sql_intern} AND #{sql_team_leader}", p.id]).size : :skip, # intern and team leader
+      @eg.has_interns ? 
+        Acceptance.find(:all, :conditions => ["project_id = ? AND #{sql_intern} AND #{sql_not_team_leader}", p.id]).size : :skip, # intern only
+      @eg.has_team_leaders ?
+        Acceptance.find(:all, :conditions => ["project_id = ? AND #{sql_not_intern} AND #{sql_team_leader}", p.id]).size : :skip, # team leader only
       nil,
       Withdrawn.find_all_by_status_and_project_id('declined', p.id).size,
       Withdrawn.find_all_by_status_and_project_id(['self_withdrawn','admin_withdrawn'], p.id).size)
       
-      # set total for first 4 columns
-      stat[:total] = stat[:started] + stat[:submitted] + stat[:completed] + stat[:accepted] + stat[:interns]
+      # set total for first 7 columns
+      stat[:total] = stat[:started] + stat[:submitted] + stat[:completed] + stat[:accepted] + 
+        (@eg.has_team_leaders && @eg.has_interns ? stat[:interns_and_team_leaders] : 0) +
+        (@eg.has_interns ? stat[:interns] : 0) +
+        (@eg.has_team_leaders ? stat[:team_leaders] : 0)
       
       @stats << stat
       
       StatEntry.members.each do |m|
         next if m == 'project'
         ms = :"#{m}"
-        totals[ms] = 0 if !totals[ms]
-        totals[ms] += stat[ms]
+        if stat[ms] == :skip
+          totals[ms] = :skip
+        else
+          totals[ms] = 0 if !totals[ms]
+          totals[ms] += stat[ms]
+        end
       end
     end
     @stats << StatEntry.new('', totals[:started].to_s, 
     totals[:submitted].to_s, totals[:completed].to_s, 
-    totals[:accepted].to_s, totals[:interns].to_s,
-    totals[:total].to_s, totals[:declined].to_s, totals[:withdrawn].to_s) if @many_projects
+    totals[:accepted].to_s, 
+    totals[:interns_and_team_leaders] == :skip ? :skip : totals[:interns_and_team_leaders].to_i,
+    totals[:interns] == :skip ? :skip : totals[:interns].to_i,
+    totals[:team_leaders] == :skip ? :skip : totals[:team_leaders].to_i,
+    totals[:total], 
+    totals[:declined], 
+    totals[:withdrawn]
+                           ) if @many_projects
     @page_title = "#{@eg.title} #{@project_title} Summer Stats"
     render_report @stats
   end
@@ -999,6 +980,30 @@ class ReportsController < ApplicationController
     end
     
     @page_title = "#{@eg.title} #{@project_title} Interns"
+    render_report @participants
+  end
+
+  def team_leaders
+    @columns = MyOrderedHash.new [
+    :last_name, 'string', 
+    :first_name, 'string',
+    @many_projects ? [ :project, 'string' ] : nil,
+    :gender, 'string',
+    :email, 'string',
+    ].flatten.compact
+    
+    @participants = []
+    loop_reports_viewers(@projects_ids, @include_pref1_applns, false) do |ac,a,v,p|
+      if ac && ac.as_team_leader?
+        gender = p.gender
+      
+        @participants << [ p.last_name.capitalize, p.first_name.capitalize, 
+          @many_projects ? (ac ? ac.project.title : a.preference1.title) : nil, 
+          gender, p.person_email ].compact
+      end
+    end
+    
+    @page_title = "#{@eg.title} #{@project_title} Team Leaders"
     render_report @participants
   end
   
