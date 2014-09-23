@@ -11,6 +11,8 @@ class SpApplicationMailer < ActionMailer::Base
              nil : acceptance.support_coach_str
     @body[:applied_as_intern] = acceptance.appln.as_intern?
     @body[:accepted_as_intern] = acceptance.as_intern?
+    @body[:applied_as_team_leader] = acceptance.appln.as_team_leader?
+    @body[:accepted_as_team_leader] = acceptance.as_team_leader?
     @bcc = processor_email
     render_from_email 'app_accepted'
   end

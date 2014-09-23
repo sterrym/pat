@@ -16,7 +16,12 @@
           <%= th 'support goal', 'currency'%>
           <%= th 'support coach', 'dropdown' %>
         <% end %>
+        <% if @eg.has_interns %>
         <%= th 'intern' %>
+        <% end %>
+        <% if @eg.has_team_leaders %>
+        <%= th 'team leader' %>
+        <% end %>
         <%= th 'other' %>
     </tr></thead>
     <tbody>
@@ -101,7 +106,12 @@
           <td></td>
         <% end %>
       </td>
+      <% if @eg.has_interns %>
       <td><%= render :partial => 'accepted_pile_table_intern', :object => acceptance %></td>
+      <% end %>
+      <% if @eg.has_team_leaders %>
+      <td><%= render :partial => 'accepted_pile_table_team_leader', :object => acceptance %></td>
+      <% end %>
       <td> <!-- other -->
         <% if @viewer.is_eventgroup_coordinator?(@eg) %>
           <% name = "acceptance_#{acceptance.id}" %>
@@ -110,7 +120,8 @@
           <%= costing_link acceptance.id %>
           <%= link_to("dashboard", profile_path(acceptance.id)) %>
         <% else %>
-        <% if acceptance.as_intern? %>intern<% end %>
+          <% if acceptance.as_intern? %>intern<% end %>
+          <% if acceptance.as_team_leader? %>team leader<% end %>
 
           <% if @viewer.is_eventgroup_coordinator?(@eg) || @viewer.is_project_administrator? %>
             <!-- link to costing page -->

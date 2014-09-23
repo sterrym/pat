@@ -1,0 +1,5 @@
+<% if @appln["as_team_leader"] %>
+    <%= render :partial => 'instance/elements' %>
+<% else %>
+  <p>You're not applying as an team leader, so you can skip this page.</p>
+<% end %>

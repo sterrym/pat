@@ -715,3 +715,9 @@ div.yui-skin-cnxbar {
 
 .datagrid thead th, .datagrid thead td {
   z-index: 5; }
+
+.edit_event_group p {
+  margin: 5px !important;
+  padding: 5px !important;
+}
+

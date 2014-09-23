@@ -13,6 +13,13 @@
       <%= f.text_field :title %>
       </p>
 
+      <br />
+
+      <p>
+      <%= f.check_box :has_interns %>
+      <b><%= f.label :has_interns, "Can apply as intern" %></b>
+      </p>
+
       <p>
       <b>Default text area character length</b><br />
       <%= f.text_field :default_text_area_length %>
@@ -20,22 +27,22 @@
 
       <p>
       <%= f.check_box :hidden %>
-      <b>Hide this event group and its sub elements</b><br />
+      <b><%= f.label :hidden, "Hide this event group and its sub elements" %></b><br />
       </p>
 
       <p>
       <%= f.check_box :show_mpdtool %>
-      <b>Show link to mpdtool on acceptance page</b>
+      <b><%= f.label :show_mpdtool, "Show link to mpdtool on acceptance page" %></b>
       </p>
 
       <p>
       <%= f.check_box :allows_multiple_applications_with_same_form %>
-      <b>Allow multiple applications that use the same form</b>
+      <b><%= f.label :allows_multiple_applications_with_same_form, "Allow multiple applications that use the same form" %></b>
       </p>
 
       <p>
       <%= f.check_box :show_dates_as_distance %>
-      <b>Show dates as words ex "5 hours ago"</b>
+      <b><%= f.label :show_dates_as_distance, 'Show dates as words ex "5 hours ago"' %></b>
       </p>
 
       </td><td>
@@ -46,18 +53,23 @@
       </p>
 
       <p>
+      <%= f.check_box :has_team_leaders %>
+      <b><%= f.label:has_team_leaders, "Can apply as team leader" %></b>
+      </p>
+
+      <p>
       <b>Outgoing email</b><br />
       <%= f.text_field :outgoing_email %>
       </p>
 
       <p>
       <%= f.check_box :has_your_campuses %>
-      <b>Has Your Campuses Page</b>
+      <b><%= f.label :has_your_campuses, "Has Your Campuses Page" %></b>
       </p>
 
       <p>
       <%= f.check_box :automatic_acceptance %>
-      <b>Automatically accept an application on submission if no references are required.</b>
+      <b><%= f.label :automatic_acceptance, "Automatically accept an application on submission if no references are required." %></b>
       </p>
 
       <p>
@@ -81,21 +93,21 @@
 
       <tr><td colspan='2'>
           <p>
-          <b><%= f.check_box :forward_to_cas %> Forward straight to CAS login</b> - don't show the PAT landing page but send directly to CAS login<br/>
+          <b><%= f.check_box :forward_to_cas %> <%= f.label :forward_to_cas, "Forward straight to CAS login" %></b> - don't show the PAT landing page but send directly to CAS login<br/>
           </p>
       </td></tr>
 
       </td><td>
 
       <% if @event_group && @event_group.has_logo? -%>
-        <p><%= check_box_tag :delete_logo %><b>Delete logo?</b></p>
+        <p><%= check_box_tag :delete_logo %><b> <%= label_tag :delete_logo, "Delete logo?" %></b></p>
       <% end %>
 
   </td></tr>
 
   <tr><td colspan='2'>
       <p>
-      <b>Title</b> - If set, this replaces the default title "<%= Pat::CONFIG[:title] %>" in the top left of the PAT.<br/>
+      <b>PAT Title</b> - If set, this replaces the default title "<%= Pat::CONFIG[:title] %>" in the top left of the PAT.<br/>
       <%= f.text_field :pat_title %> 
       </p>
   </td></tr>
@@ -123,7 +135,7 @@
 
   <tr><td colspan='2'>
       <p>
-      <b><%= f.check_box :hide_profile_cost_item_link %> Hide profile cost item link</b> - hide the link to create profile cost items<br/>
+      <b><%= f.check_box :hide_profile_cost_item_link %> <%= f.label :hide_profile_cost_item_link, "Hide profile cost item link" %></b> - hide the link to create profile cost items<br/>
       </p>
   </td></tr>
 

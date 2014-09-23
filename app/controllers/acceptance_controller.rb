@@ -15,6 +15,16 @@ class AcceptanceController < ApplicationController
     end
   end
   
+  def update_team_leader_status
+    @profile.as_team_leader = @profile.as_team_leader ? false : true
+    @profile.save!
+    if !request.xml_http_request?
+      redirect_to :controller => :main, :action => :your_projects
+    else
+      render :file => 'acceptance/update_team_leader_status', :use_full_path => true
+    end
+  end
+  
   def update_support_coach
     if params[:support_coach_id] == Acceptance.support_coach_none
       @profile.support_coach_id = nil

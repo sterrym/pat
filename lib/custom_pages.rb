@@ -14,6 +14,13 @@ module CustomPages
       errors.clear
     end
   end
+  def validate_team_leader_questions(questionnaire)
+    appln = (questionnaire.class == ProcessorForm) ? questionnaire.appln : questionnaire
+    
+    if appln.as_team_leader.nil? || appln.as_team_leader == false
+      errors.clear
+    end
+  end
   def validate_pesonal_information(questionnaire)
     if questionnaire.viewer.email.nil? || 
       questionnaire.viewer.email.empty?

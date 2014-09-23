@@ -61,6 +61,10 @@ class Acceptance < Profile
     self.as_intern? ? 'intern' : ''
   end
   
+  def team_leader
+    self.as_team_leader? ? 'team leader' : ''
+  end
+
   def project_title
     self.project.title
   end

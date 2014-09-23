@@ -94,6 +94,10 @@ class ApplnController < InstanceController
   end
   
   # custom projects preferences save/display method
+  def mission_trip_preferences(save = false)
+  end
+
+  # custom projects preferences save/display method
   def project_preferences(save = false)
     if save
       #save all the preferences
@@ -110,6 +114,11 @@ class ApplnController < InstanceController
       # save the intern flag
       if !params["application"].nil?
         @appln["as_intern"] = params["application"]["as_intern"]
+      end
+      
+      # save the team leader flag
+      if !params["application"].nil?
+        @appln["as_team_leader"] = params["application"]["as_team_leader"]
       end
     else
       @projects = @appln.form.event_group.projects.find(:all)

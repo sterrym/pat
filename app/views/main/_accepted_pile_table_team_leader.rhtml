@@ -1,0 +1,28 @@
+<div id="team_leader_<%=accepted_pile_table_team_leader.id%>">
+  <% if !accepted_pile_table_team_leader.as_team_leader? %>
+    <%= link_to_remote "make team leader", { :url => {
+                                      :controller => :acceptance, 
+                                      :action => :update_team_leader_status,
+                                      :profile_id => accepted_pile_table_team_leader.id },
+                                      :before => "Element.show('loading');",
+                                      :complete => "Element.hide('loading');", 
+                                      :confirm => "Are you sure you would like to make this person a team leader?" }, 
+                                      {:href => url_for(
+                                        :controller => :acceptance,
+                                        :action => :update_team_leader_status, 
+                                        :profile_id => accepted_pile_table_team_leader.id) } %>
+  <% else %>
+    <%= link_to_remote "Team leader", {  :url => {
+                                    :controller => :acceptance, 
+                                    :action => :update_team_leader_status,
+                                    :profile_id => accepted_pile_table_team_leader.id },
+                                    :before => "Element.show('loading');",
+                                    :complete => "Element.hide('loading');",   
+                                    :confirm => "Are you sure you would like to remove this applicant's team leader status?"}, 
+                                    {:href => url_for(
+                                      :controller => :acceptance,
+                                      :action => :update_team_leader_status,
+                                      :profile_id => accepted_pile_table_team_leader.id) } %>
+
+  <% end  %>
+</div>
