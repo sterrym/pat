@@ -1,7 +1,7 @@
 <% @appln_person ||= @instance.viewer.person if @instance %>
 <% @emerg = @appln_person.emerg if @appln_person %>
 
-<%= custom_element_item("Your Birthdate: ", :appln_person, :birth_date) do |m,c,classes|
+<%= custom_element_item("For insurance purposes, we must have your birthdate: ", :appln_person, :birth_date) do |m,c,classes|
       date_select m, c, :start_year => 100.years.ago.year, :end_year => 10.years.ago.year, :class => classes, :include_blank => true,
         :order => [ :day, :month, :year ]
     end
