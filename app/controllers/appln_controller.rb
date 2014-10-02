@@ -95,6 +95,7 @@ class ApplnController < InstanceController
   
   # custom projects preferences save/display method
   def mission_trip_preferences(save = false)
+    project_preferences(save)
   end
 
   # custom projects preferences save/display method
