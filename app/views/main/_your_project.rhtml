@@ -2,7 +2,7 @@
 <h3 style="display:inline-block"><%= your_project.title %></h3>
 
 <% if profile = @viewer.profiles.find_by_project_id(@project.id) %>
-  (<%= link_to("Dashboard", profile_path(profile)) %>)
+  (<%= link_to("View #{@viewer.person.full_name} Dashboard", profile_path(profile)) %>)
 <% end %>
 
 <br/>
@@ -41,29 +41,35 @@ end
 <% end %>
 
 <% if !@viewer.is_student?(@eg) %>
-  <p>
-    <%= link_to 'Assign tasks', :action => 'assign_individual_tasks', :project_id => your_project.id %>
-  </p>
+  <% 
+    cache(:controller => 'main', :action => 'your_projects', :section => 'Acceptance',
+          :project_id => your_project.id, :role => @viewer.roles_wrt_project(your_project)) do
+  %>
 
-  <p>Accepted pile:
-    <blockquote>
-      <%= render :partial => "accepted_pile", :locals => { :project => your_project } %>
-    </blockquote>
+    <p>
+      <%= link_to 'Assign tasks', :action => 'assign_individual_tasks', :project_id => your_project.id %>
+    </p>
+
+    <p>Accepted pile:
+	    <blockquote>
+	      <%= render :partial => "accepted_pile", :locals => { :project => your_project } %>
+      </blockquote>
+      
+    </p>
+  <% end %>
+    <!-- all staff can see the processor list, but only certain people can actually evaluate -->
+    <% @can_evaluate = @viewer.is_eventgroup_coordinator?(@eg) || @viewer.is_processor? %>
+    <% appln_includes = [ :references, { :viewer => { :persons => :campuses } }, :preference1, :profiles ]
+       @processor_list = Applying.find_all_by_project_id your_project.id
+    %>
+    <% @refs_for_questionnaire = Hash[*(@processor_list.collect{ |applying|
+           applying.appln.form.questionnaire.id
+         }.uniq.inject([]) { |arr,qid|
+           arr << qid << Questionnaire.find(qid).references
+         })]
+    %>
+
     
-  </p>
-
-  <!-- all staff can see the processor list, but only certain people can actually evaluate -->
-  <% @can_evaluate = @viewer.is_eventgroup_coordinator?(@eg) || @viewer.is_processor? %>
-  <% appln_includes = [ :references, { :viewer => { :persons => :campuses } }, :preference1, :profiles ]
-     @processor_list = Applying.find_all_by_project_id your_project.id
-  %>
-  <% @refs_for_questionnaire = Hash[*(@processor_list.collect{ |applying|
-         applying.try(:appln).try(:form).try(:questionnaire).try(:id)
-       }.uniq.compact.inject([]) { |arr,qid|
-         arr << qid << Questionnaire.find(qid).references
-       })]
-  %>
-
   <p>Processor's pile:
   <blockquote>
     <%= render :partial => "processor_pile", :locals => { :project => your_project } %>
