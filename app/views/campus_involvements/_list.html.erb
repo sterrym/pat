@@ -17,7 +17,7 @@
     ), :class => classes, :name => "appln_person[school_year_id]" %>
   <%- end -%>
   <br/>
-  <%- custom_element_item("Grad Date: ", :appln_person, :school_year_id) do |m, c, classes| -%>
+  <%- custom_element_item("Grad Date: ", :appln_person, :graduation_date) do |m, c, classes| -%>
     <label>Grad Date: (give approximately if you don't know exactly)</label><br/>
     <%= select_date @appln_person.primary_campus_involvement.try(:graduation_date), :prefix => "appln_person[grad_date]", :end_year => 10.years.from_now.year %>
   <%- end -%>
