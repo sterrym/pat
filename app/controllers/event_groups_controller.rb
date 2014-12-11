@@ -166,7 +166,7 @@ class EventGroupsController < AjaxTreeController
 
     def set_layout
       if params[:action] == "scope"
-        return "empty"
+        return "login"
       else
         return "application"
       end

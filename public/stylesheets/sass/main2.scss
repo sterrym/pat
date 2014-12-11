@@ -825,15 +825,6 @@ div.yui-skin-cnxbar {
   padding: 5px !important;
 }
 
-.login_center {
-  width: 1250px;
-  height: 525px;
- //background-position: 0px -140px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-}
-
 #pics {
   list-style-type: none;
   li {
@@ -894,6 +885,32 @@ div.yui-skin-cnxbar {
   border-radius: 20px;
 }
 
+.login_center {
+  width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#login_content {
+  position: absolute;
+  top: 157px;
+  bottom: 155px;
+  width: 1250px;
+}
+
+#blurb_login_wrapper {
+  position: absolute;
+  top: 170px;
+  bottom: 0px;
+  width: 100%;
+}
+
+#blurb_login {
+  position: relative;
+  top: 50%;
+  margin-top: -130px;
+}
+
 #blurb {
   text-align: justify;
   width: 535px;
@@ -902,7 +919,7 @@ div.yui-skin-cnxbar {
   border-right: 2px solid #CACACA;
   position: absolute;
   right: 550px;
-  top: 226px;
+  top: 0px;
   font-size: 15px;
   font-weight: 100;
   line-height: 18px;
@@ -912,8 +929,7 @@ div.yui-skin-cnxbar {
 #login {
   position: absolute;
   left: 810px;
-  //top: 425px;
-  top: 265px;
+  top: 29px;
   width: 300px;
   margin: auto;
   margin-top: 20px;
@@ -939,13 +955,13 @@ div.yui-skin-cnxbar {
 }
 
 html.security.login, html.event_groups.scope {
-  min-height: 750px !important;
+  min-height: 770px !important;
   body {
     background-color: #F4F4F4;
     .ether {
       height: 100%;
       width: 100%;
-      background-image: url("/images/ethos lines 4.png");
+      background-image: url("/images/ethos lines 9.png");
       background-size: cover;
       .wrapper {
         min-height: 750px;
@@ -971,15 +987,11 @@ html.security.login, html.event_groups.scope {
   height: 153px;
   width: 100%;
   position: absolute;
-  //top: 530px;
-  //top: 700px;
   bottom: 0px;
-  //top: -50px;
-  //height: 156px;
   background-color: #F4F4F4;
   div#cluster_wrapper {
     position: relative;
-    top: 25px;
+    top: 20px;
     width: 708px;
     height: 103px;
     margin-left: auto;
@@ -988,10 +1000,17 @@ html.security.login, html.event_groups.scope {
 }
 
 body.event_groups.scope {
+  background-color: white !important;
+  .ether {
+    background-image: url("/images/ethos lines 9 light.png") !important;
+  }
   #scope_c {
     width: 780px;
     margin-top: 60px;
     margin-left: auto;
     margin-right: auto;
+  }
+  ul {
+    list-style: none;
   }
 }
