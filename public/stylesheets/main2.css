@@ -804,11 +804,16 @@ body.security.login {
     text-align: center;
     line-height: 20px; }
 
-body.security.login, body.event_groups.scope {
-  min-height: 820px;
-  position: relative; }
+html.security.login, html.event_groups.scope {
+  min-height: 870px !important; }
+  html.security.login body .wrapper, html.event_groups.scope body .wrapper {
+    min-height: 850px;
+    min-width: 1280px;
+    position: relative;
+    height: 100%;
+    width: 100%; }
 
-#login_footer {
+.login_footer {
   position: absolute;
   bottom: 0px;
   left: 0px;
