@@ -1,0 +1,31 @@
+<html class='<%= params[:controller] %> <%= params[:action] %>'>
+  <head>
+    <%= stylesheet_link_tag 'main2', 'connexion_default' %>
+    <title>Power to Change</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,700,100,400' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/myriadpro.otf' rel='stylesheet' type='text/css'>
+  </head>
+  <body class='<%= params[:controller] %> <%= params[:action] %>'>
+    <div class="ether">
+      <div class="wrapper">
+        <div id='blueheader'>
+          <div class='login_center'>
+            <%= image_tag "/images/p2c_logo2.png" %>
+            <h1 class='login_title'>Project Application Tool</h1>
+          </div>
+        </div>
+
+        <%= yield %>
+
+        <div class="login_footer">
+            <div id="ministries_panel">
+              <div id="cluster_wrapper" class='login_center'>
+                <%= image_tag "/images/ministries_cluster.png" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -826,7 +826,7 @@ div.yui-skin-cnxbar {
 }
 
 .login_center {
-  width: 1280px;
+  width: 1250px;
   height: 525px;
  //background-position: 0px -140px;
   margin-left: auto;
@@ -838,6 +838,8 @@ div.yui-skin-cnxbar {
   list-style-type: none;
   li {
     float: left;
+  }
+  li:not(:last-child) {
     margin-right: 23px;
   }
 }
@@ -891,29 +893,19 @@ div.yui-skin-cnxbar {
   behavior: url(/stylesheets/border-radius.htc);
   border-radius: 20px;
 }
-#blurb_login_wrapper {
-  background-color: white;
-  position: absolute;
-  right: 140px;
-  top: 386px;
-  width: 1000px;
-  height: 280px;
-  font-family: "Myriad Pro";
-}
 
 #blurb {
   text-align: justify;
   width: 535px;
-  height: 222px;
+  height: 200px;
   padding: 20px;
   border-right: 2px solid #CACACA;
   position: absolute;
   right: 550px;
-  //top: 386px;
-  top: 246px;
-  font-size: 16px;
+  top: 226px;
+  font-size: 15px;
   font-weight: 100;
-  line-height: 20px;
+  line-height: 18px;
   font-family: "Myriad Pro";
 }
 
@@ -921,12 +913,12 @@ div.yui-skin-cnxbar {
   position: absolute;
   left: 810px;
   //top: 425px;
-  top: 285px;
+  top: 265px;
   width: 300px;
   margin: auto;
   margin-top: 20px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-family: "Myriad Pro";
   a {
     text-decoration: none;
@@ -947,17 +939,21 @@ div.yui-skin-cnxbar {
 }
 
 html.security.login, html.event_groups.scope {
-  min-height: 870px !important;
+  min-height: 750px !important;
   body {
     background-color: #F4F4F4;
-    .wrapper {
-      background-image: url("/images/ethos lines 9.png");
-      background-size: cover;
-      min-height: 850px;
-      min-width: 1280px;
-      position: relative;
+    .ether {
       height: 100%;
       width: 100%;
+      background-image: url("/images/ethos lines 4.png");
+      background-size: cover;
+      .wrapper {
+        min-height: 750px;
+        min-width: 1250px;
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 }
@@ -992,9 +988,6 @@ html.security.login, html.event_groups.scope {
 }
 
 body.event_groups.scope {
-  .login_center {
-    width: 1100px;
-  }
   #scope_c {
     width: 780px;
     margin-top: 60px;

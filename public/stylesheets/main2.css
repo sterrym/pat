@@ -702,7 +702,7 @@ div.yui-skin-cnxbar {
   padding: 5px !important; }
 
 .login_center {
-  width: 1280px;
+  width: 1250px;
   height: 525px;
   margin-left: auto;
   margin-right: auto;
@@ -711,7 +711,8 @@ div.yui-skin-cnxbar {
 #pics {
   list-style-type: none; }
   #pics li {
-    float: left;
+    float: left; }
+  #pics li:not(:last-child) {
     margin-right: 23px; }
 
 #blueheader {
@@ -754,38 +755,29 @@ div.yui-skin-cnxbar {
   behavior: url(/stylesheets/border-radius.htc);
   border-radius: 20px; }
 
-#blurb_login_wrapper {
-  background-color: white;
-  position: absolute;
-  right: 140px;
-  top: 386px;
-  width: 1000px;
-  height: 280px;
-  font-family: "Myriad Pro"; }
-
 #blurb {
   text-align: justify;
   width: 535px;
-  height: 222px;
+  height: 200px;
   padding: 20px;
   border-right: 2px solid #CACACA;
   position: absolute;
   right: 550px;
-  top: 246px;
-  font-size: 16px;
+  top: 226px;
+  font-size: 15px;
   font-weight: 100;
-  line-height: 20px;
+  line-height: 18px;
   font-family: "Myriad Pro"; }
 
 #login {
   position: absolute;
   left: 810px;
-  top: 285px;
+  top: 265px;
   width: 300px;
   margin: auto;
   margin-top: 20px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-family: "Myriad Pro"; }
   #login a {
     text-decoration: none;
@@ -801,17 +793,20 @@ div.yui-skin-cnxbar {
     line-height: 20px; }
 
 html.security.login, html.event_groups.scope {
-  min-height: 870px !important; }
+  min-height: 750px !important; }
   html.security.login body, html.event_groups.scope body {
     background-color: #F4F4F4; }
-    html.security.login body .wrapper, html.event_groups.scope body .wrapper {
-      background-image: url("/images/ethos lines 9.png");
-      background-size: cover;
-      min-height: 850px;
-      min-width: 1280px;
-      position: relative;
+    html.security.login body .ether, html.event_groups.scope body .ether {
       height: 100%;
-      width: 100%; }
+      width: 100%;
+      background-image: url("/images/ethos lines 4.png");
+      background-size: cover; }
+      html.security.login body .ether .wrapper, html.event_groups.scope body .ether .wrapper {
+        min-height: 750px;
+        min-width: 1250px;
+        position: relative;
+        height: 100%;
+        width: 100%; }
 
 .login_footer {
   position: absolute;
@@ -835,8 +830,6 @@ html.security.login, html.event_groups.scope {
     margin-left: auto;
     margin-right: auto; }
 
-body.event_groups.scope .login_center {
-  width: 1100px; }
 body.event_groups.scope #scope_c {
   width: 780px;
   margin-top: 60px;

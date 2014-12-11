@@ -295,6 +295,6 @@ class SecurityController < ApplicationController
   end
 
   def set_layout
-    params[:action] == "login" ? "empty" : "application"
+    params[:action] == "login" ? "login" : "application"
   end
 end
