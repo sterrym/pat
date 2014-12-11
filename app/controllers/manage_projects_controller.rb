@@ -168,7 +168,7 @@ class ManageProjectsController < ApplicationController
 
     @found_viewers = match_by_userID + match_by_name
     
-    render :action => "roles/search_results", :layout => "empty"
+    render :action => "roles/search_results", :layout => false
   end
   
   def add

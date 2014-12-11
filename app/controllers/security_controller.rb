@@ -10,8 +10,9 @@ class SecurityController < ApplicationController
   skip_before_filter :set_event_group
 
   before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :login
-
   before_filter :ensure_gcx_in_session, :only => [ :link_gcx, :do_link_gcx, :link_gcx_new, :do_link_gcx_new ]
+
+  layout :set_layout
 
   # makes a new viewer and person and links them to the gcx logged in
   def do_link_gcx
@@ -145,6 +146,7 @@ class SecurityController < ApplicationController
       flash[:notice] = result[:error]
     elsif result[:gcx_no_viewer]
       redirect_to :action => 'link_gcx'
+      return
     elsif !result[:keep_trying]
       setup_given_viewer_id result[:viewer_id]
     end
@@ -155,7 +157,6 @@ class SecurityController < ApplicationController
       clear_login_session_info
       logger.info "Intranet login closed @ #{Time.now} - viewer #{@viewer.viewer_userID} id #{@viewer.id}"
     end
-
   end
 
   def login_by_cim
@@ -291,5 +292,9 @@ class SecurityController < ApplicationController
 
   def is_demo_host
     request.host['demo']
+  end
+
+  def set_layout
+    params[:action] == "login" ? "empty" : "application"
   end
 end

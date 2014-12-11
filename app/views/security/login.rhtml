@@ -1,1 +1,57 @@
-<%= render :partial => 'login' %>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,700,100,400' rel='stylesheet' type='text/css'>
+<link href='/stylesheets/myriadpro.otf' rel='stylesheet' type='text/css'>
+<!--<div class='login_center'>-->
+  <div id='blueheader'>
+    <div class='login_center'>
+      <%= image_tag "/images/p2c_logo2.png" %>
+      <h1 class='login_title'>Project Application Tool</h1>
+    </div>
+  </div>
+
+  <div class='login_center'>
+    <ul id='pics'>
+      <%- (1..5).each do |i| -%>
+      <li><%= image_tag "/images/login_pic#{i}.png" %></li>
+      <% end %>
+    </ul>
+    <!--
+    <div id='blurb_login_wrapper' class='login_transparency login_rounded_corners'>
+      &nbsp;
+    </div>
+    -->
+
+    <div id='blurb' class=''>
+      Welcome to the Project Application Tool (PAT).  This site is used by Power to Chage
+      ministries to help you apply for the various mission trips that are available.  You 
+      can save your applicaiton to be finished at a later time and your reference requests
+      are sent right from this tool.<br/>
+      <br/>
+      The site uses a single sign on called The Key.  Please sign up for an account email
+      that you will use to communicate with Power to Change on the status of your mission trip.<br/>
+      <br/>
+      Thank you!  If you have any questions on how to use this site, please contact<br/>
+      <%= mail_to "projects@p2c.com" %>
+    </div>
+
+    <div id="login" class=''>
+      <div id="keylogo">
+        <% link_to brand_link(CASClient::Frameworks::Rails::Filter.login_url(controller)) do %>
+          <%= image_tag "/images/logo_thekey.png" %>
+        <% end %>
+      </div>
+      <div id="login_links">
+        <%= link_to "Login with TheKey", brand_link(CASClient::Frameworks::Rails::Filter.login_url(controller)), :id => "login_link" %><br/>
+        or</br>
+        <%= link_to "Create an account", "https://thekey.me/cas/service/selfservice?target=signup&service=https%3A//pat.powertochange.org/security/login", :id => "create_link" %><br/>
+      </div>
+    </div>
+  </div>
+
+  <div id="login_footer">
+    <div id="ministries_panel">
+      <div id="cluster_wrapper" class='login_center'>
+        <%= image_tag "/images/ministries_cluster.png" %>
+      </div>
+    </div>
+  </div>
+<!--</div>-->

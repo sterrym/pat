@@ -16,21 +16,6 @@ function update_links() {
 
 </script>
 
-<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,700,100,400' rel='stylesheet' type='text/css'>
-<link href='/stylesheets/myriadpro.otf' rel='stylesheet' type='text/css'>
-<!--<div class='login_center'>-->
-  <div id='blueheader'>
-    <div class='login_center'>
-      <%= image_tag "/images/p2c_logo2.png" %>
-      <h1 class='login_title'>Project Application Tool</h1>
-    </div>
-  </div>
-
-  <div class='login_center'>
-
-
-
-
 <%= if @columns then "<div id='scope_c'>" end %>
 
 <div id="event_group_links" class="<%= if @columns then "centerblock" end %>">
@@ -51,17 +36,3 @@ function update_links() {
 <script>jQuery(function() { update_links(); });</script>
 
 <%= if @columns then "</div>" end %>
-
-
-
-    </div>
-  </div>
-
-  <div id="login_footer">
-    <div id="ministries_panel">
-      <div id="cluster_wrapper" class='login_center'>
-        <%= image_tag "/images/ministries_cluster.png" %>
-      </div>
-    </div>
-  </div>
-

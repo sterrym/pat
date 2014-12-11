@@ -1,3 +1,7 @@
+@font-face {
+  font-family: Myriad Pro;
+  src: url("/stylesheets/myriadpro.otf") format("opentype"); }
+
 body, body.x-body {
   font-family: Arial;
   font-size: 12px;
@@ -141,19 +145,6 @@ div#student_view, div#travel_itinerary, div#cost_items, div#prep_items, div#prof
 
 #list_reports ol li {
   padding: 5px; }
-
-#login {
-  width: 250px;
-  margin: auto;
-  margin-top: 20px;
-  text-align: center;
-  padding: 10px; }
-
-#login table {
-  margin: auto; }
-
-#login form {
-  margin-bottom: 10px; }
 
 #loading, #saving {
   background-color: red;
@@ -379,16 +370,6 @@ fieldset label {
   float: left;
   width: 5em;
   margin-right: 1em; }
-
-div#account_links, #login_table {
-  width: 50em;
-  margin: auto;
-  clear: both;
-  text-align: center;
-  margin-top: 1.5em; }
-
-#login_table {
-  width: 20em; }
 
 input#submit {
   float: right; }
@@ -718,6 +699,141 @@ div.yui-skin-cnxbar {
 
 .edit_event_group p {
   margin: 5px !important;
-  padding: 5px !important;
-}
+  padding: 5px !important; }
 
+body.security.login {
+  background-image: url("/images/ethos lines 9.png");
+  background-size: cover; }
+
+.login_center {
+  width: 1280px;
+  height: 525px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative; }
+
+#pics {
+  list-style-type: none; }
+  #pics li {
+    float: left;
+    margin-right: 23px; }
+
+#blueheader {
+  height: 140px;
+  left: 0px;
+  right: 0px;
+  background-color: #266C8C;
+  position: relative; }
+  #blueheader img {
+    position: absolute;
+    left: 152px;
+    top: 36px; }
+  #blueheader h1.login_title {
+    position: absolute;
+    left: 382px;
+    top: 30px;
+    font-size: 60px;
+    margin: 0px;
+    color: white;
+    font-family: 'Roboto Slab' !important;
+    font-weight: 100; }
+
+.login_transparency {
+  /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  /* IE 5-7 */
+  filter: alpha(opacity=75);
+  /* Netscape */
+  -moz-opacity: 0.75;
+  /* Safari 1.x */
+  -khtml-opacity: 0.75;
+  /* Good browsers */
+  opacity: 0.75; }
+
+.login_rounded_corners {
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+  behavior: url(/stylesheets/border-radius.htc);
+  border-radius: 20px; }
+
+#blurb_login_wrapper {
+  background-color: white;
+  position: absolute;
+  right: 140px;
+  top: 386px;
+  width: 1000px;
+  height: 280px;
+  font-family: "Myriad Pro"; }
+
+#blurb {
+  text-align: justify;
+  width: 535px;
+  height: 222px;
+  padding: 20px;
+  border-right: 2px solid #CACACA;
+  position: absolute;
+  right: 550px;
+  top: 246px;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 20px;
+  font-family: "Myriad Pro"; }
+
+#login {
+  position: absolute;
+  left: 810px;
+  top: 285px;
+  width: 300px;
+  margin: auto;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: "Myriad Pro"; }
+  #login a {
+    text-decoration: none;
+    color: #60A830; }
+  #login a:visited {
+    text-decoration: none;
+    color: #60A830; }
+  #login #login_links {
+    position: absolute;
+    left: 160px;
+    top: 45px;
+    text-align: center;
+    line-height: 20px; }
+
+body.security.login, body.event_groups.scope {
+  min-height: 820px;
+  position: relative; }
+
+#login_footer {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px; }
+
+#ministries_panel {
+  left: 0px;
+  right: 0px;
+  background-color: #F4F4F4;
+  height: 153px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px; }
+  #ministries_panel div#cluster_wrapper {
+    position: relative;
+    top: 25px;
+    width: 708px;
+    height: 103px;
+    margin-left: auto;
+    margin-right: auto; }
+
+body.event_groups.scope .login_center {
+  width: 1100px; }
+body.event_groups.scope #scope_c {
+  width: 780px;
+  margin-top: 60px;
+  margin-left: auto;
+  margin-right: auto; }

@@ -15,6 +15,8 @@ class EventGroupsController < AjaxTreeController
   # then scope doesn't work
   before_filter :clear_cache#, :only => [ :create, :update, :destroy ]
 
+  layout :set_layout
+
   def nodes
   end
 
@@ -159,6 +161,14 @@ class EventGroupsController < AjaxTreeController
         @viewer.is_projects_coordinator?
       else
         @viewer.is_eventgroup_coordinator?(EventGroup.find(params[:event_group][:parent_id]))
+      end
+    end
+
+    def set_layout
+      if params[:action] == "scope"
+        return "empty"
+      else
+        return "application"
       end
     end
 end

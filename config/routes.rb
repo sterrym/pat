@@ -126,7 +126,7 @@ ActionController::Routing::Routes.draw do |map|
   
   # You can have the root of your site routed by hooking up '' 
   # -- just remember to delete public/index.html.
-  map.connect '', :controller => "main"
+  map.connect '', :controller => "security", :action => "login"
   
   # register slug/url shortcut
   map.connect '/register/:slug', :controller => "event_groups", :action => "scope_by_slug"

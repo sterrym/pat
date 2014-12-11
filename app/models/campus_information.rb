@@ -26,6 +26,8 @@ class CampusInformation < Element
       school_year_id = params[:appln_person][:school_year_id]
       c = Campus.find(campus_id)
 
+      debugger
+
       # look for an existing one
       @campus_involvement = person.all_campus_involvements.find :first, :conditions => { :campus_id => campus_id }
       @campus_involvement ||= person.all_campus_involvements.new :start_date => Date.today, :ministry_id => c.derive_ministry.try(:id), :campus_id => c.id, :graduation_date => grad_date, :school_year_id => school_year_id
