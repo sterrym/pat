@@ -825,11 +825,6 @@ div.yui-skin-cnxbar {
   padding: 5px !important;
 }
 
-body.security.login {
-  background-image: url("/images/ethos lines 9.png");
-  background-size: cover;
-}
-
 .login_center {
   width: 1280px;
   height: 525px;
@@ -954,7 +949,10 @@ body.security.login {
 html.security.login, html.event_groups.scope {
   min-height: 870px !important;
   body {
+    background-color: #F4F4F4;
     .wrapper {
+      background-image: url("/images/ethos lines 9.png");
+      background-size: cover;
       min-height: 850px;
       min-width: 1280px;
       position: relative;
@@ -974,7 +972,6 @@ html.security.login, html.event_groups.scope {
 #ministries_panel {
   left: 0px;
   right: 0px;
-  background-color: #F4F4F4;
   height: 153px;
   width: 100%;
   position: absolute;
@@ -983,6 +980,7 @@ html.security.login, html.event_groups.scope {
   bottom: 0px;
   //top: -50px;
   //height: 156px;
+  background-color: #F4F4F4;
   div#cluster_wrapper {
     position: relative;
     top: 25px;
