@@ -9,6 +9,7 @@ class Person < ActiveRecord::Base
   has_many :staff_assignments
   has_many :staff_campuses, :through => :staff_assignments, :class_name => "Campus", :source => :campus
   has_many :staffs
+  has_many :users, :through => :access, :conditions => "viewer_isActive = 1"
 
   def viewers
     users
