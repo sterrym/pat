@@ -15,7 +15,7 @@ class Person < ActiveRecord::Base
   end
 
   def viewer
-    viewers[0]
+    viewers.detect{ |v| v.viewer_isActive }
   end
 
   #belongs_to :viewer, :foreign_key => :user_id

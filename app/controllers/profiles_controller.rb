@@ -41,7 +41,7 @@ class ProfilesController < ApplicationController
       end
 
     ps = Person.find :all, :conditions => conditions,
-         :include => :users, :order => [ "#{Person._(:last_name)}, #{Person._(:preferred_first_name)}" ]
+         :joins => :users, :order => [ "#{Person._(:last_name)}, #{Person._(:preferred_first_name)}" ]
 
     vs = Viewer.find :all, :conditions => [ "#{Viewer._(:username)} like ? ", "%#{filter_s}%" ]
 
