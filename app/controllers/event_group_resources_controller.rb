@@ -36,6 +36,11 @@ class EventGroupResourcesController < ApplicationController
     @event_group_resource = EventGroupResource.find(params[:id])
     @event_group_resource.project_ids = params[:project_ids]
 
+    if params[:url].present?
+      @event_group_resource.resource.update_attribute :url, params[:url]
+      @event_group_resource.url = params[:url]
+    end
+
     respond_to do |format|
       if @event_group_resource.update_attributes(:title => params[:title], :description => params[:description])
         format.json { render :json => { :success => true, :event_group_resources => [@event_group_resource] } }
