@@ -96,8 +96,7 @@ class ProfilesController < ApplicationController
 
   def index
     @page_title = "Dashboard"
-    profiles = @viewer.profiles.find_all{ |p| @eg.projects.collect(&:id).include?(p.project_id) || 
-      p.try(:appln).try(:form).try(:event_group) == @eg }
+    profiles = @viewer.profiles.find_all{ |p| (@eg.projects.collect(&:id).include?(p.project_id) || p.try(:appln).try(:form).try(:event_group) == @eg) && !p.is_a?(StaffProfile) }
 
     @started = find_profiles profiles, :class => Applying, :status => :started
     @unsubmitted = find_profiles profiles, :class => Applying, :status => :unsubmitted
