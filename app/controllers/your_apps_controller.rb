@@ -15,7 +15,7 @@ class YourAppsController < ApplicationController
   end
 
   def view
-    profiles = @viewer.profiles.find_all{ |profile| profile.try(:project).try(:event_group_id) == @eg.id || profile.try(:appln).try(:form).try(:event_group_id) == @eg.id }
+    profiles = @viewer.profiles.find_all{ |profile| (profile.try(:project).try(:event_group_id) == @eg.id || profile.try(:appln).try(:form).try(:event_group_id) == @eg.id) && !profile.is_a?(StaffProfile) }
     if profiles.length > 1
       flash[:notice] = "You have multiple applications - please choose one to view."
       redirect_to :controller => :profiles, :action => :index
