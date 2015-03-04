@@ -13,3 +13,5 @@ public/event_groups
 tmp
 *.swp
 public/ext-4.1.1a
+
+db/dumps/pat_production-*.sql
